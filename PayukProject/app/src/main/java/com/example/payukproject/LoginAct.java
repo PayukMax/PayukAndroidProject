@@ -44,8 +44,8 @@ public class LoginAct extends AppCompatActivity {
                             login_passw.setText("");
                             Toast.makeText(LoginAct.this, "Авторизация успешно пройдена... Вы администратор!!!", Toast.LENGTH_SHORT).show();
 
-//                            Intent intent = new Intent(LoginAct.this, AdminAct.class);
-//                            startActivity(intent);
+                            Intent intent = new Intent(LoginAct.this, AdminAct.class);
+                            startActivity(intent);
                             dbh.close();
                         }
                         if (dbh.getRole(login_name.getText().toString())==1){
