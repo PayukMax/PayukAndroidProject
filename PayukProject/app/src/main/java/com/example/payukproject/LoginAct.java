@@ -51,9 +51,8 @@ public class LoginAct extends AppCompatActivity {
                         if (dbh.getRole(login_name.getText().toString())==1){
                             login_passw.setText("");
                             Toast.makeText(LoginAct.this, "Авторизация успешно пройдена...Ваша роль Call центр", Toast.LENGTH_SHORT).show();
-
-//                            Intent intent = new Intent(LoginAct.this, Role1Act.class);
-//                            startActivity(intent);
+                            Intent intent = new Intent(LoginAct.this, Role1Act.class);
+                            startActivity(intent);
                             dbh.close();
                         }
                         if (dbh.getRole(login_name.getText().toString())==2){
