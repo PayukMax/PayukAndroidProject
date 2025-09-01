@@ -51,7 +51,8 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COL_2, name);
-        cv.put(COL_3, pass); // вот тут надо приправить пароль солью и сохранить хеш
+//        cv.put(COL_3, pass); // вот тут надо приправить пароль солью и сохранить хеш
+        cv.put(COL_3, Crpt.Encrypte(pass)); // вот тут надо приправить пароль солью и сохранить хеш
         cv.put(COL_4, role);
         long result = db.insert(TABLE_NAME, null, cv);
         return result != -1;
@@ -61,7 +62,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COL_2, name);
-        cv.put(COL_3, passw); // вот тут надо приправить пароль солью и сохранить хеш
+        cv.put(COL_3, Crpt.Encrypte(passw)); // вот тут надо приправить пароль солью и сохранить хеш
         cv.put(COL_4, role);
         db.update(TABLE_NAME, cv, "ID=?", new String[]{String.valueOf(id)});
     }
@@ -89,7 +90,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getName().equals(t_user)) { // ищем пользователя
-                if (list.get(i).getPassw().equals(t_passw)) return true; // Проверка совпадения пароля
+                if (Crpt.Decrypt(list.get(i).getPassw()).equals(t_passw)) return true; // Проверка совпадения пароля
             }
         }
 
