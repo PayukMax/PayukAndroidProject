@@ -133,6 +133,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 data.setId(cursor.getInt(pos1));
                 data.setName(cursor.getString(pos2));
                 data.setPassw(cursor.getString(pos3));
+//                data.setPassw(Crpt.Decrypt(cursor.getString(pos3)));
                 data.setRole(cursor.getInt(pos4));
                 list.add(data);
             } while (cursor.moveToNext());
@@ -156,7 +157,8 @@ public class DBHelper extends SQLiteOpenHelper {
                         UserData usData = new UserData();
                         usData.setId(cursor.getInt(cursor.getColumnIndex(COL_1)));
                         usData.setName(cursor.getString(cursor.getColumnIndex(COL_2)));
-                        usData.setPassw(cursor.getString(cursor.getColumnIndex(COL_3)));
+//                        usData.setPassw(cursor.getString(cursor.getColumnIndex(COL_3)));
+                        usData.setPassw(Crpt.Decrypt(cursor.getString(cursor.getColumnIndex(COL_3))));
                         usData.setRole(cursor.getInt(cursor.getColumnIndex(COL_4)));
                         usersList.add(usData);
                     } while (cursor.moveToNext());
