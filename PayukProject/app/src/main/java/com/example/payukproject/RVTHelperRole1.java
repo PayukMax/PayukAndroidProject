@@ -7,14 +7,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.payukproject.Adaptor.UsListAdaptor;
+import com.example.payukproject.Adaptor.Role1Adapter;
 
-public class RecyclerViewTouchHelper extends ItemTouchHelper.SimpleCallback{
-    UsListAdaptor adaptor;
+public class RVTHelperRole1 extends ItemTouchHelper.SimpleCallback{
+    Role1Adapter adapter;
 
-    public RecyclerViewTouchHelper(UsListAdaptor adaptor) {
+    public RVTHelperRole1(Role1Adapter adapter) {
         super(0, ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT);
-        this.adaptor = adaptor;
+        this.adapter = adapter;
     }
 
     @Override
@@ -26,26 +26,26 @@ public class RecyclerViewTouchHelper extends ItemTouchHelper.SimpleCallback{
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         final int position = viewHolder.getAdapterPosition();
         if (direction==ItemTouchHelper.RIGHT){
-            AlertDialog.Builder builder = new AlertDialog.Builder(adaptor.getContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(adapter.getContext());
             builder.setTitle("Удалить пользователя?");
             builder.setMessage("Уверены?");
             builder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    adaptor.deleteUser(position);
+                    adapter.deleteRecord(position);
                 }
             });
             builder.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    adaptor.notifyItemChanged(position);
+                    adapter.notifyItemChanged(position);
                 }
             });
 
             AlertDialog dialog = builder.create();
             dialog.show();
         } else {
-            adaptor.editUser(position);
+            adapter.editRecord(position);
         }
     }
 }
