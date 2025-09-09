@@ -1,6 +1,7 @@
 package com.example.payukproject.Adaptor;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.payukproject.AddNewRecRole1;
+import com.example.payukproject.AddNewUser;
 import com.example.payukproject.Model.Role1Data;
 import com.example.payukproject.Model.UserData;
 import com.example.payukproject.R;
@@ -70,8 +73,22 @@ public class Role1Adapter extends RecyclerView.Adapter<Role1Adapter.Role1ViewHol
     }
 
     public void editRecord(int position) {
-        Toast.makeText(activity.getApplicationContext(), "EDIT!!!!!", Toast.LENGTH_SHORT).show();
-        notifyDataSetChanged();
+
+        Role1Data item = recList.get(position);
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", item.getId());
+        bundle.putInt("zakNum", item.getZakNum());
+        bundle.putString("zakCarNum", item.getZakCarNum());
+        bundle.putString("zakDateTime", item.getZakDateTime());
+        bundle.putString("zakPhone", item.getZakPhone());
+        bundle.putString("zakCarModel", item.getZakCarModel());
+        bundle.putString("zakNote", item.getZakNote());
+        bundle.putInt("completed", item.getCompleted());
+        AddNewRecRole1 nRecord = new AddNewRecRole1();
+        nRecord.setArguments(bundle);
+        nRecord.show(activity.getSupportFragmentManager(), nRecord.getTag());
+//          Toast.makeText(activity.getApplicationContext(), "EDIT!!!!!", Toast.LENGTH_SHORT).show();
+//        notifyDataSetChanged();
     }
 
     public static class Role1ViewHolder extends RecyclerView.ViewHolder {

@@ -14,6 +14,7 @@ import com.example.payukproject.Model.UserData;
 import com.example.payukproject.Role1Act;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Role1DBHelper extends SQLiteOpenHelper {
@@ -30,6 +31,7 @@ public class Role1DBHelper extends SQLiteOpenHelper {
     private static final String COL_8 = "complete";
     private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_2 + " INTEGER NOT NULL," + COL_3 + " TEXT NOT NULL, " + COL_4 + " INTEGER NOT NULL, "+COL_5+" TEXT NOT NULL,"+COL_6+" TEXT, "+COL_7+" TEXT, "+COL_8+" INTEGER);";
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME + " ;";
+    private static final String GETMAXNUM = "SELECT MAX("+COL_2+") FROM "+TABLE_NAME+" ;";
 
     public Role1DBHelper(@Nullable Context context) {
         super(context, dbName, null, 1);
@@ -98,18 +100,48 @@ public class Role1DBHelper extends SQLiteOpenHelper {
         return recordList;
     }
 
-    public void updateUser(int id, String name, String passw, int role) {
+    public void updateRecord(int id, int zakazId, String carNum, String datTime, String zakPhone,String zakModel, String zakNote, int complete) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(COL_2, name);
-        cv.put(COL_3, Crpt.Encrypte(passw)); // вот тут надо приправить пароль солью и сохранить хеш
-        cv.put(COL_4, role);
+        cv.put(COL_2, zakazId);
+        cv.put(COL_3, carNum);
+        cv.put(COL_4, datTime);
+        cv.put(COL_5, zakPhone);
+        cv.put(COL_6, zakModel);
+        cv.put(COL_7, zakNote);
+        cv.put(COL_8, complete);
+
         db.update(TABLE_NAME, cv, "ID=?", new String[]{String.valueOf(id)});
     }
+
+    public int getMaxNum(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cv = db.rawQuery(GETMAXNUM,null);
+        int tmp = 0;
+        if (cv != null) {
+            try {
+                if (cv.moveToFirst()) {
+                    tmp = cv.getInt(0);
+                }
+            } finally {
+                cv.close();
+            }
+        }
+        return tmp;
+    }
+
 
     public void deleteUser(int id){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, "id=?", new String[]{String.valueOf(id)});
     }
 
+    public boolean checkNumRecord(int zakN) {// проверяем записи на предмет совпадения кода переданного снаружи и кода заказа в имеющихся записях. Есть совпадение - true
+        List<Role1Data> list = getAllRecords();
+
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getZakNum() == zakN) return true;
+        }
+        return false;
+    }
 }

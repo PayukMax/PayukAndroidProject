@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,7 @@ public class AddNewRecRole1 extends BottomSheetDialogFragment {
     private EditText numRec, carNum, datTime, phone, carModel, note;
     private Button rSaveButton;
     private Role1DBHelper myDB;
+    private TextView tv;
 
     public static AddNewRecRole1 newInstance() {
         return new AddNewRecRole1();
@@ -42,6 +44,7 @@ public class AddNewRecRole1 extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        tv = view.findViewById(R.id.textView6);
         numRec = view.findViewById(R.id.et_num_rec);
         carNum = view.findViewById(R.id.et_car_num);
         datTime = view.findViewById(R.id.et_date_time);
@@ -49,12 +52,24 @@ public class AddNewRecRole1 extends BottomSheetDialogFragment {
         carModel = view.findViewById(R.id.et_car_model);
         note = view.findViewById(R.id.et_note);
         rSaveButton = view.findViewById(R.id.add_rec_btn);
+        rSaveButton.setBackgroundColor(Color.GRAY);
 
         myDB = new Role1DBHelper(getActivity());
+        numRec.setText(String.valueOf(myDB.getMaxNum() + 1));
+
         boolean isUpdate = false;
         Bundle bundle = getArguments();
         if (bundle != null) {
             isUpdate = true; // если прилетел свиток то это не новая запись а обновление старой, потому ведем себя иначе
+            numRec.setText(String.valueOf(bundle.getInt("zakNum")));
+            carNum.setText(bundle.getString("zakCarNum"));
+            datTime.setText(bundle.getString("zakDateTime"));
+            phone.setText(bundle.getString("zakPhone"));
+            carModel.setText(bundle.getString("zakCarModel"));
+            note.setText(bundle.getString("zakNote"));
+            rSaveButton.setBackgroundColor(Color.BLUE);
+            tv.setText("Редактирование существующей записи");
+//
 //            int t1 = bundle.getInt("id");
 //            String t2 = bundle.getString("user");
 //            String t3 = bundle.getString("passw");
@@ -75,7 +90,7 @@ public class AddNewRecRole1 extends BottomSheetDialogFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().equals("")) {
+                if (s.toString().equals("") || phone.getText().toString().equals("")) {
                     rSaveButton.setEnabled(false);
                     rSaveButton.setBackgroundColor(Color.GRAY);
                 } else {
@@ -99,7 +114,7 @@ public class AddNewRecRole1 extends BottomSheetDialogFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                if (s.toString().equals("")) {
+                if (s.toString().equals("") || carNum.getText().toString().equals("")) {
                     rSaveButton.setEnabled(false);
                     rSaveButton.setBackgroundColor(Color.GRAY);
                 } else {
@@ -120,24 +135,29 @@ public class AddNewRecRole1 extends BottomSheetDialogFragment {
         rSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int zakN = Integer.parseInt(numRec.getText().toString());
-                String carN = carNum.getText().toString();
-                String datN = datTime.getText().toString();
-                String phoneN = phone.getText().toString();
-                String modelN = carModel.getText().toString();
-                String noteN = note.getText().toString();
-                int complN = 0;
-
-                if (finalIsUpdate) {
-//                    myDB.updateUser(bundle.getInt("id"), tUser, tPass, tRole);
-                } else {
-//                    if (myDB.checkUserName(tUser)) {
-//                        Toast.makeText(getContext(), "Такой пользователь уже существует. Укажите другое имя...", Toast.LENGTH_SHORT).show();
-//                    } else {
-                        myDB.addRecord(zakN, carN, datN, phoneN, modelN, noteN, complN);
-//                    }
+                // проверяем нет ли записи с тактим же номером задачи
+                int zakN = 0;
+                if (!numRec.getText().toString().isEmpty()) {
+                    zakN = Integer.parseInt(numRec.getText().toString());
                 }
-                dismiss();
+                if (!myDB.checkNumRecord(zakN)) {
+                    String carN = carNum.getText().toString();
+                    String datN = datTime.getText().toString();
+                    String phoneN = phone.getText().toString();
+                    String modelN = carModel.getText().toString();
+                    String noteN = note.getText().toString();
+                    int complN = 0;
+                    if (!carN.isEmpty() && !phoneN.isEmpty() && !numRec.getText().toString().isEmpty()) {
+                        if (finalIsUpdate) {
+                            myDB.updateRecord(bundle.getInt("id"), zakN, carN, datN, phoneN, modelN, noteN, complN);
+                        } else {
+                            myDB.addRecord(zakN, carN, datN, phoneN, modelN, noteN, complN);
+                        }
+                        dismiss();
+                    } else {
+                        Toast.makeText(getContext(), "Для сохранения поля в рамке должны быть заполнены!!!!", Toast.LENGTH_LONG).show();
+                    }
+                } else {Toast.makeText(getContext(), "Запись с таким номером уже существует. Укажите другой номер...", Toast.LENGTH_SHORT).show();}
             }
         });
     }
