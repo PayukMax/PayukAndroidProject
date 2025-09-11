@@ -28,16 +28,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        name = findViewById(R.id.editName);
+        passw = findViewById(R.id.editPassw);
+        btn_save = findViewById(R.id.btnSave);
+
         DBHelper dbh = new DBHelper(this);
         if (dbh.checkRoot()) {
             Intent intent = new Intent(MainActivity.this, LoginAct.class);
             startActivity(intent);
             dbh.close();
+            name.setFocusable(false);
+            passw.setFocusable(false);
+            btn_save.setEnabled(false);
         }
 
-        name = findViewById(R.id.editName);
-        passw = findViewById(R.id.editPassw);
-        btn_save = findViewById(R.id.btnSave);
+
 
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -17,9 +17,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.payukproject.Utils.DBHelper;
 import com.example.payukproject.Utils.Role1DBHelper;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class AddNewRecRole1 extends BottomSheetDialogFragment {
     public static final String TAG = "AddNewRecRole1";
@@ -53,9 +56,15 @@ public class AddNewRecRole1 extends BottomSheetDialogFragment {
         note = view.findViewById(R.id.et_note);
         rSaveButton = view.findViewById(R.id.add_rec_btn);
         rSaveButton.setBackgroundColor(Color.GRAY);
+        // ставим текущую дате в поле дата/тайм
+        long timestampMillis = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String formattedDate = sdf.format(new Date(timestampMillis));
+        datTime.setText(formattedDate);
+
 
         myDB = new Role1DBHelper(getActivity());
-        numRec.setText(String.valueOf(myDB.getMaxNum() + 1));
+        numRec.setText(String.valueOf(myDB.Role1getMaxNum() + 1));
 
         boolean isUpdate = false;
         Bundle bundle = getArguments();
@@ -140,7 +149,7 @@ public class AddNewRecRole1 extends BottomSheetDialogFragment {
                 if (!numRec.getText().toString().isEmpty()) {
                     zakN = Integer.parseInt(numRec.getText().toString());
                 }
-                if (!myDB.checkNumRecord(zakN)) {
+                if (!myDB.Role1checkNumRecord(zakN)) {
                     String carN = carNum.getText().toString();
                     String datN = datTime.getText().toString();
                     String phoneN = phone.getText().toString();
@@ -149,9 +158,10 @@ public class AddNewRecRole1 extends BottomSheetDialogFragment {
                     int complN = 0;
                     if (!carN.isEmpty() && !phoneN.isEmpty() && !numRec.getText().toString().isEmpty()) {
                         if (finalIsUpdate) {
-                            myDB.updateRecord(bundle.getInt("id"), zakN, carN, datN, phoneN, modelN, noteN, complN);
+                            myDB.Role1updateRecord(bundle.getInt("id"), zakN, carN, datN, phoneN, modelN, noteN, complN);
                         } else {
-                            myDB.addRecord(zakN, carN, datN, phoneN, modelN, noteN, complN);
+                           boolean tmp= myDB.Role1addRecord(zakN, carN, datN, phoneN, modelN, noteN, complN);
+                           if (!tmp) Toast.makeText(getContext(), "Ошибка БД. Запись не добавлена!!!", Toast.LENGTH_SHORT).show();
                         }
                         dismiss();
                     } else {

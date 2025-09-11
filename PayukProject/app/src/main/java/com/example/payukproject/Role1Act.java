@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.payukproject.Adaptor.Role1Adapter;
 import com.example.payukproject.Model.Role1Data;
-import com.example.payukproject.Utils.Crpt;
 import com.example.payukproject.Utils.Role1DBHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -43,7 +42,7 @@ public class Role1Act extends AppCompatActivity implements OnDialogCloseListener
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(rAdapter);
 
-        rList = role1DB.getAllRecords();
+        rList = role1DB.Role1getAllRecords();
         rAdapter.setUser(rList);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RVTHelperRole1(rAdapter));
@@ -62,7 +61,7 @@ public class Role1Act extends AppCompatActivity implements OnDialogCloseListener
 
     @Override
     public void onDialogClose(DialogInterface dialogInterface) {
-        rList = role1DB.getAllRecords();
+        rList = role1DB.Role1getAllRecords();
         rAdapter.setUser(rList);
         rAdapter.notifyDataSetChanged();
     }

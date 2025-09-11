@@ -10,17 +10,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.example.payukproject.Model.Role1Data;
-import com.example.payukproject.Model.UserData;
-import com.example.payukproject.Role1Act;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Role1DBHelper extends SQLiteOpenHelper {
 
     private static final String dbName = "project1.db";
     private static final String TABLE_NAME = "role1";//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
     private static final String COL_1 = "id";
     private static final String COL_2 = "zakaz_id";
     private static final String COL_3 = "car_num";
@@ -31,7 +29,24 @@ public class Role1DBHelper extends SQLiteOpenHelper {
     private static final String COL_8 = "complete";
     private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_2 + " INTEGER NOT NULL," + COL_3 + " TEXT NOT NULL, " + COL_4 + " INTEGER NOT NULL, "+COL_5+" TEXT NOT NULL,"+COL_6+" TEXT, "+COL_7+" TEXT, "+COL_8+" INTEGER);";
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME + " ;";
+
     private static final String GETMAXNUM = "SELECT MAX("+COL_2+") FROM "+TABLE_NAME+" ;";
+
+    private static final String TABLE_NAME2 = "role2";//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    private static final String T2_COL_1 = "id";
+    private static final String T2_COL_2 = "id_nar";
+    private static final String T2_COL_3 = "car_num";
+    private static final String T2_COL_4 = "zak_phone";
+    private static final String T2_COL_5 = "zak_car_model";
+    private static final String T2_COL_6 = "zak_note";
+    private static final String T2_COL_7 = "diagnost";
+    private static final String T2_COL_8 = "result";
+    private static final String T2_COL_9 = "summa";
+    private static final String T2_COL_10 = "dat_begin";
+    private static final String T2_COL_11 = "dat_end";
+
+    private static final String CREATE_TABLE2 = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME2 + " (" + T2_COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT," + T2_COL_2 + " INTEGER NOT NULL," + T2_COL_3 + " TEXT NOT NULL, " + T2_COL_4 + " TEXT NOT NULL,"+T2_COL_5+" TEXT NOT NULL,"+T2_COL_6+" TEXT, "+T2_COL_7+" TEXT NOT NULL ,"+T2_COL_8+" TEXT NOT NULL ,"+T2_COL_9+" INTEGER NOT NULL,"+T2_COL_10+" TEXT NOT NULL ,"+T2_COL_11+" TEXT NOT NULL"+" );";
+    private static final String DROP_TABLE2 = "DROP TABLE IF EXISTS " + TABLE_NAME2 + " ;";
 
     public Role1DBHelper(@Nullable Context context) {
         super(context, dbName, null, 1);
@@ -41,6 +56,7 @@ public class Role1DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         try {
             db.execSQL(CREATE_TABLE);
+            db.execSQL(CREATE_TABLE2);
         } catch (Exception ignored) {
 
         }
@@ -49,10 +65,11 @@ public class Role1DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(DROP_TABLE);
+        db.execSQL(DROP_TABLE2);
         onCreate(db);
     }
 
-    public boolean addRecord(int zakazId, String carNum, String datTime, String zakPhone,String zakModel, String zakNote, int complete) {
+    public boolean Role1addRecord(int zakazId, String carNum, String datTime, String zakPhone, String zakModel, String zakNote, int complete) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COL_2, zakazId);
@@ -62,13 +79,20 @@ public class Role1DBHelper extends SQLiteOpenHelper {
         cv.put(COL_6, zakModel);
         cv.put(COL_7, zakNote);
         cv.put(COL_8, complete);
-
         long result = db.insert(TABLE_NAME, null, cv);
+
+//        ContentValues cv2 = new ContentValues();
+//        cv2.put(COL_2, zakazId);
+//        cv2.put(COL_3, carNum);
+//        cv2.put(COL_4, datTime);
+//        long result2 = db.insert(TABLE_NAME2, null, cv2);
+
+
         return result != -1;
     }
 
     @SuppressLint("Range")
-    public List<Role1Data> getAllRecords() {
+    public List<Role1Data> Role1getAllRecords() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = null;
         List<Role1Data> recordList = new ArrayList<>();
@@ -100,7 +124,7 @@ public class Role1DBHelper extends SQLiteOpenHelper {
         return recordList;
     }
 
-    public void updateRecord(int id, int zakazId, String carNum, String datTime, String zakPhone,String zakModel, String zakNote, int complete) {
+    public void Role1updateRecord(int id, int zakazId, String carNum, String datTime, String zakPhone, String zakModel, String zakNote, int complete) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COL_2, zakazId);
@@ -114,7 +138,7 @@ public class Role1DBHelper extends SQLiteOpenHelper {
         db.update(TABLE_NAME, cv, "ID=?", new String[]{String.valueOf(id)});
     }
 
-    public int getMaxNum(){
+    public int Role1getMaxNum(){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cv = db.rawQuery(GETMAXNUM,null);
         int tmp = 0;
@@ -131,17 +155,44 @@ public class Role1DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void deleteUser(int id){
+    public void Role1deleteRecord(int id){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, "id=?", new String[]{String.valueOf(id)});
     }
 
-    public boolean checkNumRecord(int zakN) {// проверяем записи на предмет совпадения кода переданного снаружи и кода заказа в имеющихся записях. Есть совпадение - true
-        List<Role1Data> list = getAllRecords();
+    public boolean Role1checkNumRecord(int zakN) {// проверяем записи на предмет совпадения кода переданного снаружи и кода заказа в имеющихся записях. Есть совпадение - true
+        List<Role1Data> list = Role1getAllRecords();
 
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getZakNum() == zakN) return true;
         }
         return false;
     }
+
+    // методы для роли 2
+
+    public boolean Role2addRecord(int zakazId, String carNum, String datTime, String zakPhone, String zakModel, String zakNote, int complete) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COL_2, zakazId);
+        cv.put(COL_3, carNum);
+        cv.put(COL_4, datTime);
+        cv.put(COL_5, zakPhone);
+        cv.put(COL_6, zakModel);
+        cv.put(COL_7, zakNote);
+        cv.put(COL_8, complete);
+        long result = db.insert(TABLE_NAME, null, cv);
+
+//        ContentValues cv2 = new ContentValues();
+//        cv2.put(COL_2, zakazId);
+//        cv2.put(COL_3, carNum);
+//        cv2.put(COL_4, datTime);
+//        long result2 = db.insert(TABLE_NAME2, null, cv2);
+
+
+        return result != -1;
+    }
+
+
+
 }

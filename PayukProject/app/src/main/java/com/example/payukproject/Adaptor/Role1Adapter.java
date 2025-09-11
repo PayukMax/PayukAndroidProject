@@ -6,15 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.payukproject.AddNewRecRole1;
-import com.example.payukproject.AddNewUser;
 import com.example.payukproject.Model.Role1Data;
-import com.example.payukproject.Model.UserData;
 import com.example.payukproject.R;
 import com.example.payukproject.Role1Act;
 import com.example.payukproject.Utils.Role1DBHelper;
@@ -67,7 +64,7 @@ public class Role1Adapter extends RecyclerView.Adapter<Role1Adapter.Role1ViewHol
 
     public void deleteRecord(int position){
         Role1Data item = recList.get(position);
-        roleDB.deleteUser(item.getId());
+        roleDB.Role1deleteRecord(item.getId());
         recList.remove(position);
         notifyItemRemoved(position);
     }
