@@ -36,7 +36,7 @@ public class Role1Act extends AppCompatActivity implements OnDialogCloseListener
         addRecord = findViewById(R.id.role1FAB);
         role1DB = new Role1DBHelper(Role1Act.this);
         rList = new ArrayList<>();
-        rAdapter = new Role1Adapter(role1DB, Role1Act.this);
+        rAdapter = new Role1Adapter(role1DB, Role1Act.this, this);
 
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -51,7 +51,7 @@ public class Role1Act extends AppCompatActivity implements OnDialogCloseListener
         addRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(Role1Act.this, "!!!!!!!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(Role1Act.this, "!!!!!!!", Toast.LENGTH_SHORT).show();
                 AddNewRecRole1.newInstance().show(getSupportFragmentManager(),AddNewRecRole1.TAG);
 
             }

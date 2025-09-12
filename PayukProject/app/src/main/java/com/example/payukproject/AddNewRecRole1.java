@@ -91,6 +91,10 @@ public class AddNewRecRole1 extends BottomSheetDialogFragment {
 //                mSaveButton.setEnabled(false);
 //            }
         }
+        if (isUpdate){
+            numRec.setFocusable(false);
+        }
+
         carNum.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -149,7 +153,6 @@ public class AddNewRecRole1 extends BottomSheetDialogFragment {
                 if (!numRec.getText().toString().isEmpty()) {
                     zakN = Integer.parseInt(numRec.getText().toString());
                 }
-                if (!myDB.Role1checkNumRecord(zakN)) {
                     String carN = carNum.getText().toString();
                     String datN = datTime.getText().toString();
                     String phoneN = phone.getText().toString();
@@ -159,15 +162,19 @@ public class AddNewRecRole1 extends BottomSheetDialogFragment {
                     if (!carN.isEmpty() && !phoneN.isEmpty() && !numRec.getText().toString().isEmpty()) {
                         if (finalIsUpdate) {
                             myDB.Role1updateRecord(bundle.getInt("id"), zakN, carN, datN, phoneN, modelN, noteN, complN);
+                            dismiss();
                         } else {
-                           boolean tmp= myDB.Role1addRecord(zakN, carN, datN, phoneN, modelN, noteN, complN);
-                           if (!tmp) Toast.makeText(getContext(), "Ошибка БД. Запись не добавлена!!!", Toast.LENGTH_SHORT).show();
+                            if (!myDB.Role1checkNumRecord(zakN)){
+                                boolean tmp= myDB.Role1addRecord(zakN, carN, datN, phoneN, modelN, noteN, complN);
+                                if (!tmp) Toast.makeText(getContext(), "Ошибка БД. Запись не добавлена!!!", Toast.LENGTH_SHORT).show();
+                                dismiss();
+                            } else Toast.makeText(getContext(), "Запись с таким номером уже существует. Укажите другой номер...", Toast.LENGTH_SHORT).show();
                         }
-                        dismiss();
+
                     } else {
                         Toast.makeText(getContext(), "Для сохранения поля в рамке должны быть заполнены!!!!", Toast.LENGTH_LONG).show();
                     }
-                } else {Toast.makeText(getContext(), "Запись с таким номером уже существует. Укажите другой номер...", Toast.LENGTH_SHORT).show();}
+
             }
         });
     }

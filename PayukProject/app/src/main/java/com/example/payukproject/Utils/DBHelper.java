@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.payukproject.DBTables;
 import com.example.payukproject.Model.UserData;
 
 import java.util.ArrayList;

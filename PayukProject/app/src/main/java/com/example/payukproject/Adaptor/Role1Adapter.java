@@ -1,6 +1,7 @@
 package com.example.payukproject.Adaptor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.payukproject.AddNewRecRole1;
 import com.example.payukproject.Model.Role1Data;
 import com.example.payukproject.R;
+import com.example.payukproject.RecordDetail;
 import com.example.payukproject.Role1Act;
 import com.example.payukproject.Utils.Role1DBHelper;
 
@@ -21,13 +23,14 @@ import java.util.List;
 public class Role1Adapter extends RecyclerView.Adapter<Role1Adapter.Role1ViewHolder> {
 
     private List<Role1Data> recList;
-
+    private Context context;
     private Role1DBHelper roleDB;
     private Role1Act activity;
 
-    public Role1Adapter(Role1DBHelper roleDB, Role1Act activity) {
+    public Role1Adapter(Role1DBHelper roleDB, Role1Act activity, Context context) {
         this.roleDB = roleDB;
         this.activity = activity;
+        this.context = context;
     }
 
     @NonNull
@@ -41,14 +44,25 @@ public class Role1Adapter extends RecyclerView.Adapter<Role1Adapter.Role1ViewHol
     public void onBindViewHolder(@NonNull Role1Adapter.Role1ViewHolder holder, int position) {
         final Role1Data item = recList.get(position);
 //        holder.zakaz_id.setText(item.getZakNum());
+        int id = item.getId();
         holder.zakaz_id.setText(String.valueOf(item.getZakNum()));
         holder.car_num.setText(item.getZakCarNum());
         holder.dat_time.setText(item.getZakDateTime());
 //      добавить заполнение чекбокса в строке RV
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() { // было .itemView. стало relativeLayout
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, RecordDetail.class);
+                intent.putExtra("id", String.valueOf(id));
+                context.startActivity(intent);
+            }
+        });
+
+
     }
 
-    public Context getContext(){
+    public Context getContext() {
         return activity;
     }
 
@@ -57,12 +71,12 @@ public class Role1Adapter extends RecyclerView.Adapter<Role1Adapter.Role1ViewHol
         return recList.size();
     }
 
-    public void setUser (List<Role1Data> List){
+    public void setUser(List<Role1Data> List) {
         this.recList = List;
         notifyDataSetChanged();
     }
 
-    public void deleteRecord(int position){
+    public void deleteRecord(int position) {
         Role1Data item = recList.get(position);
         roleDB.Role1deleteRecord(item.getId());
         recList.remove(position);

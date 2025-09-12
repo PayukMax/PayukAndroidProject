@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RecordDetail">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Карточка записи на СТО"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Номер заказа :"
+        android:textSize="18sp"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_zakNum"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginStart="30dp"
+        app:layout_constraintStart_toEndOf="@+id/text1"
+        app:layout_constraintTop_toTopOf="@+id/text1" />
+
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Гос номер а/м :"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text1" />
+
+    <TextView
+        android:id="@+id/tv_zakCarNum"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginStart="30dp"
+        app:layout_constraintStart_toEndOf="@+id/text2"
+        app:layout_constraintTop_toTopOf="@+id/text2" />
+
+    <TextView
+        android:id="@+id/text3"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Дата визита :"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text2" />
+
+    <TextView
+        android:id="@+id/tv_zakDateTime"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginStart="30dp"
+        app:layout_constraintStart_toEndOf="@+id/text3"
+        app:layout_constraintTop_toTopOf="@+id/text3" />
+
+    <TextView
+        android:id="@+id/text4"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Телефон заказчика :"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text3" />
+
+    <TextView
+        android:id="@+id/tv_zakPhone"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginStart="30dp"
+        app:layout_constraintStart_toEndOf="@+id/text4"
+        app:layout_constraintBottom_toBottomOf="@+id/text4" />
+
+    <TextView
+        android:id="@+id/text5"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Марка а/м  :"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text4" />
+
+    <TextView
+        android:id="@+id/tv_zakCarModel"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginStart="30dp"
+        app:layout_constraintStart_toEndOf="@+id/text5"
+        app:layout_constraintTop_toTopOf="@+id/text5" />
+
+    <TextView
+        android:id="@+id/text6"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Описание проблемы :"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text5" />
+
+    <TextView
+        android:id="@+id/tv_zakNote"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toEndOf="@+id/text6"
+        app:layout_constraintTop_toTopOf="@+id/text6" />
+
+
+<!--    <Button-->
+<!--        android:id="@+id/btn_back"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginHorizontal="20dp"-->
+<!--        android:layout_marginBottom="20dp"-->
+<!--        android:text="Венруться"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        tools:ignore="MissingConstraints" />-->
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.payukproject.DBTables;
 import com.example.payukproject.Model.Role1Data;
 
 import java.util.ArrayList;
@@ -16,37 +17,42 @@ import java.util.List;
 
 public class Role1DBHelper extends SQLiteOpenHelper {
 
-    private static final String dbName = "project1.db";
-    private static final String TABLE_NAME = "role1";//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    private static final String dbName = DBTables.dbName;
+    private static final String TABLE_NAME = DBTables.TABLE_NAME;
 
-    private static final String COL_1 = "id";
-    private static final String COL_2 = "zakaz_id";
-    private static final String COL_3 = "car_num";
-    private static final String COL_4 = "date_time";
-    private static final String COL_5 = "zak_phone";
-    private static final String COL_6 = "zak_car_model";
-    private static final String COL_7 = "zak_note";
-    private static final String COL_8 = "complete";
-    private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_2 + " INTEGER NOT NULL," + COL_3 + " TEXT NOT NULL, " + COL_4 + " INTEGER NOT NULL, "+COL_5+" TEXT NOT NULL,"+COL_6+" TEXT, "+COL_7+" TEXT, "+COL_8+" INTEGER);";
-    private static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME + " ;";
+    private static final String COL_1 = DBTables.COL_1;
+    private static final String COL_2 = DBTables.COL_2;
+    private static final String COL_3 = DBTables.COL_3;
+    private static final String COL_4 = DBTables.COL_4;
+    private static final String COL_5 = DBTables.COL_5;
+    private static final String COL_6 = DBTables.COL_6;
+    private static final String COL_7 = DBTables.COL_7;
+    private static final String COL_8 = DBTables.COL_8;
+    private static final String CREATE_TABLE = DBTables.Table1Create;
+            //"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_2 + " INTEGER NOT NULL," + COL_3 + " TEXT NOT NULL, " + COL_4 + " INTEGER NOT NULL, "+COL_5+" TEXT NOT NULL,"+COL_6+" TEXT, "+COL_7+" TEXT, "+COL_8+" INTEGER);";
+    private static final String DROP_TABLE = DBTables.Table1Drop;
+                    //"DROP TABLE IF EXISTS " + TABLE_NAME + " ;";
 
-    private static final String GETMAXNUM = "SELECT MAX("+COL_2+") FROM "+TABLE_NAME+" ;";
+    private static final String GETMAXNUM = DBTables.Table1GETMaxNum;
+            //"SELECT MAX("+COL_2+") FROM "+TABLE_NAME+" ;";
 
-    private static final String TABLE_NAME2 = "role2";//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    private static final String T2_COL_1 = "id";
-    private static final String T2_COL_2 = "id_nar";
-    private static final String T2_COL_3 = "car_num";
-    private static final String T2_COL_4 = "zak_phone";
-    private static final String T2_COL_5 = "zak_car_model";
-    private static final String T2_COL_6 = "zak_note";
-    private static final String T2_COL_7 = "diagnost";
-    private static final String T2_COL_8 = "result";
-    private static final String T2_COL_9 = "summa";
-    private static final String T2_COL_10 = "dat_begin";
-    private static final String T2_COL_11 = "dat_end";
+    private static final String TABLE_NAME2 = DBTables.TABLE2_NAME;
+    private static final String T2_COL_1 = DBTables.T2_C_1;
+    private static final String T2_COL_2 = DBTables.T2_C_2;
+    private static final String T2_COL_3 = DBTables.T2_C_3;
+    private static final String T2_COL_4 = DBTables.T2_C_4;
+    private static final String T2_COL_5 = DBTables.T2_C_5;
+    private static final String T2_COL_6 = DBTables.T2_C_6;
+    private static final String T2_COL_7 = DBTables.T2_C_7;
+    private static final String T2_COL_8 = DBTables.T2_C_8;
+    private static final String T2_COL_9 = DBTables.T2_C_9;
+    private static final String T2_COL_10 = DBTables.T2_C_10;
+    private static final String T2_COL_11 = DBTables.T2_C_11;
 
-    private static final String CREATE_TABLE2 = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME2 + " (" + T2_COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT," + T2_COL_2 + " INTEGER NOT NULL," + T2_COL_3 + " TEXT NOT NULL, " + T2_COL_4 + " TEXT NOT NULL,"+T2_COL_5+" TEXT NOT NULL,"+T2_COL_6+" TEXT, "+T2_COL_7+" TEXT NOT NULL ,"+T2_COL_8+" TEXT NOT NULL ,"+T2_COL_9+" INTEGER NOT NULL,"+T2_COL_10+" TEXT NOT NULL ,"+T2_COL_11+" TEXT NOT NULL"+" );";
-    private static final String DROP_TABLE2 = "DROP TABLE IF EXISTS " + TABLE_NAME2 + " ;";
+    private static final String CREATE_TABLE2 = DBTables.CREATE_TABLE2;
+            //"CREATE TABLE IF NOT EXISTS " + TABLE_NAME2 + " (" + T2_COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT," + T2_COL_2 + " INTEGER NOT NULL," + T2_COL_3 + " TEXT NOT NULL, " + T2_COL_4 + " TEXT NOT NULL,"+T2_COL_5+" TEXT NOT NULL,"+T2_COL_6+" TEXT, "+T2_COL_7+" TEXT NOT NULL ,"+T2_COL_8+" TEXT NOT NULL ,"+T2_COL_9+" INTEGER NOT NULL,"+T2_COL_10+" TEXT NOT NULL ,"+T2_COL_11+" TEXT NOT NULL"+" );";
+    private static final String DROP_TABLE2 = DBTables.DROP_TABLE2;
+                    //"DROP TABLE IF EXISTS " + TABLE_NAME2 + " ;";
 
     public Role1DBHelper(@Nullable Context context) {
         super(context, dbName, null, 1);
