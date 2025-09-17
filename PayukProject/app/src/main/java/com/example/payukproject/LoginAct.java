@@ -57,9 +57,9 @@ public class LoginAct extends AppCompatActivity {
                         }
                         if (dbh.getRole(login_name.getText().toString())==2){
                             login_passw.setText("");
-                            Toast.makeText(LoginAct.this, "Авторизация успешно пройдена...Ваша роль Мастер приемщик", Toast.LENGTH_SHORT).show();
-//                            Intent intent = new Intent(LoginAct.this, Role2Act.class);
-//                            startActivity(intent);
+                            Toast.makeText(LoginAct.this, "Авторизация успешно пройдена...Ваша роль Мастер СТО", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginAct.this, Role2Act.class);
+                            startActivity(intent);
                             dbh.close();
                         }
                         if (dbh.getRole(login_name.getText().toString())==3){

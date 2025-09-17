@@ -122,7 +122,9 @@ public class AddNewUser extends BottomSheetDialogFragment {
                 int tRole = Integer.parseInt(mRole.getText().toString());
 
                 if (finalIsUpdate) {
-                    myDB.updateUser(bundle.getInt("id"), tUser, tPass, tRole);
+                    if (!myDB.checkUserName(tUser)) {
+                        myDB.updateUser(bundle.getInt("id"), tUser, tPass, tRole);
+                    } else {Toast.makeText(getContext(), "Такой пользователь уже существует. Укажите другое имя...", Toast.LENGTH_SHORT).show();}
                 } else {
                     if (myDB.checkUserName(tUser)) {
                         Toast.makeText(getContext(), "Такой пользователь уже существует. Укажите другое имя...", Toast.LENGTH_SHORT).show();
