@@ -29,5 +29,99 @@ public class Role2Data {
 //    public static final String T2_C_12 = "complete";
 
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getRemNum() {
+        return remNum;
+    }
+
+    public void setRemNum(int remNum) {
+        this.remNum = remNum;
+    }
+
+    public String getRemCarNum() {
+        return remCarNum;
+    }
+
+    public void setRemCarNum(String remCarNum) {
+        this.remCarNum = remCarNum;
+    }
+
+    public String getRemPhone() {
+        return remPhone;
+    }
+
+    public void setRemPhone(String remPhone) {
+        this.remPhone = remPhone;
+    }
+
+    public String getRemCarModel() {
+        return remCarModel;
+    }
+
+    public void setRemCarModel(String remCarModel) {
+        this.remCarModel = remCarModel;
+    }
+
+    public String getRemNote() {
+        return remNote;
+    }
+
+    public void setRemNote(String remNote) {
+        this.remNote = remNote;
+    }
+
+    public String getRemDiagnost() {
+        return remDiagnost;
+    }
+
+    public void setRemDiagnost(String remDiagnost) {
+        this.remDiagnost = remDiagnost;
+    }
+
+    public String getRemResult() {
+        return remResult;
+    }
+
+    public void setRemResult(String remResult) {
+        this.remResult = remResult;
+    }
+
+    public int getRemSumma() {
+        return remSumma;
+    }
+
+    public void setRemSumma(int remSumma) {
+        this.remSumma = remSumma;
+    }
+
+    public String getRemDateBegin() {
+        return remDateBegin;
+    }
+
+    public void setRemDateBegin(String remDateBegin) {
+        this.remDateBegin = remDateBegin;
+    }
+
+    public String getRemDateEnd() {
+        return remDateEnd;
+    }
+
+    public void setRemDateEnd(String remDateEnd) {
+        this.remDateEnd = remDateEnd;
+    }
+
+    public int getRemComplete() {
+        return remComplete;
+    }
+
+    public void setRemComplete(int remComplete) {
+        this.remComplete = remComplete;
+    }
 }

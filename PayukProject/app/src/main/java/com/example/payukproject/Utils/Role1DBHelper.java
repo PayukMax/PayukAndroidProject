@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import com.example.payukproject.DBTables;
 import com.example.payukproject.Model.Role1Data;
+import com.example.payukproject.Model.Role2Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -191,6 +192,43 @@ public class Role1DBHelper extends SQLiteOpenHelper {
 //    public static final String T2_C_12 = "complete";
 
 
+    @SuppressLint("Range")
+    public List<Role2Data> Role2getAllRecords() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = null;
+        List<Role2Data> recordList = new ArrayList<>();
+
+        db.beginTransaction();
+        try {
+            cursor = db.query(DBTables.TABLE2_NAME,null,null,null,null,null,null,null);
+            if (cursor != null){
+                if (cursor.moveToFirst()){
+                    do {
+                        Role2Data usData = new Role2Data();
+                        usData.setId(cursor.getInt(cursor.getColumnIndex(DBTables.T2_C_1)));
+                        usData.setRemNum(cursor.getInt(cursor.getColumnIndex(DBTables.T2_C_2)));
+                        usData.setRemCarNum(cursor.getString(cursor.getColumnIndex(DBTables.T2_C_3)));
+                        usData.setRemPhone(cursor.getString(cursor.getColumnIndex(DBTables.T2_C_4)));
+                        usData.setRemCarModel(cursor.getString(cursor.getColumnIndex(DBTables.T2_C_5)));                        // добавить занесение признака выполнения работ
+                        usData.setRemNote(cursor.getString(cursor.getColumnIndex(DBTables.T2_C_6)));
+                        usData.setRemDiagnost(cursor.getString(cursor.getColumnIndex(DBTables.T2_C_7)));
+                        usData.setRemResult(cursor.getString(cursor.getColumnIndex(DBTables.T2_C_8)));
+                        usData.setRemSumma(cursor.getInt(cursor.getColumnIndex(DBTables.T2_C_9)));
+                        usData.setRemDateBegin(cursor.getString(cursor.getColumnIndex(DBTables.T2_C_10)));
+                        usData.setRemDateEnd(cursor.getString(cursor.getColumnIndex(DBTables.T2_C_11)));
+                        usData.setRemComplete(cursor.getInt(cursor.getColumnIndex(DBTables.T2_C_12)));
+                        recordList.add(usData);
+                    } while (cursor.moveToNext());
+                }
+            }
+
+        } finally {
+            db.endTransaction();
+            cursor.close();
+        }
+        return recordList;
+    }
+
 
     public boolean Role2AddRecord(int zakId, String remCarNum, String remPhone, String remCarModel, String zakNote, String remDiagnost, String remResult, int remSumma , String remDatBegin, String remDatEnd, int complete) {// ПАРВИТЬ!!!!
         SQLiteDatabase db = this.getWritableDatabase();
@@ -209,6 +247,24 @@ public class Role1DBHelper extends SQLiteOpenHelper {
 
         long result = db.insert(DBTables.TABLE2_NAME, null, cv);
         return result != -1;
+    }
+
+    public void Role2updateRecord(int id, int zakazId, String carNum, String zakPhone, String zakModel, String zakNote, String diagnost, String result,int summa,String datBeg, String datEnd, int complete) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(DBTables.T2_C_2, zakazId);
+        cv.put(DBTables.T2_C_3, carNum);
+        cv.put(DBTables.T2_C_4, zakPhone);
+        cv.put(DBTables.T2_C_5, zakModel);
+        cv.put(DBTables.T2_C_6, zakNote);
+        cv.put(DBTables.T2_C_7, diagnost);
+        cv.put(DBTables.T2_C_8, result);
+        cv.put(DBTables.T2_C_9, summa);
+        cv.put(DBTables.T2_C_10, datBeg);
+        cv.put(DBTables.T2_C_11, datEnd);
+        cv.put(DBTables.T2_C_12, complete);
+
+        db.update(DBTables.TABLE2_NAME, cv, "ID=?", new String[]{String.valueOf(id)});
     }
 
     public void Role2deleteRecord(int id){
@@ -233,5 +289,13 @@ public class Role1DBHelper extends SQLiteOpenHelper {
     }
 
 
+    public boolean Role2checkNumRecord(int zakN) {// проверяем записи на предмет совпадения кода переданного снаружи и кода заказа в имеющихся записях. Есть совпадение - true
+        List<Role2Data> list = Role2getAllRecords();
+
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getId() == zakN) return true;
+        }
+        return false;
+    }
 
 }

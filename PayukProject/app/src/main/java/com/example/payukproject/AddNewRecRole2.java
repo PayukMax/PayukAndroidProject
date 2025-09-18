@@ -25,11 +25,12 @@ import java.util.Date;
 import java.util.Locale;
 
 public class AddNewRecRole2 extends BottomSheetDialogFragment {
+    public static final String TAG = "AddNewRecRole2";
 
-    private EditText numRec, carNum, datTime, phone, carModel, note; // переменные ло полей которые будем сохранять - то есть всех
+    private EditText numRec, carNum, phone, carModel, note, diagnost, result, summa, datBeg, datEnd; // переменные ло полей которые будем сохранять - то есть всех
     private Button rSaveButton;
     private Role1DBHelper myDB;
-    private TextView tv;
+    private TextView tv, id;
 
     public static AddNewRecRole2 newInstance() {
         return new AddNewRecRole2();
@@ -47,49 +48,47 @@ public class AddNewRecRole2 extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        tv = view.findViewById(R.id.textView6);
-        numRec = view.findViewById(R.id.et_num_rec);
-        carNum = view.findViewById(R.id.et_car_num);
-        datTime = view.findViewById(R.id.et_date_time);
-        phone = view.findViewById(R.id.et_phone);
-        carModel = view.findViewById(R.id.et_car_model);
-        note = view.findViewById(R.id.et_note);
-        rSaveButton = view.findViewById(R.id.add_rec_btn);
+        tv = view.findViewById(R.id.tv_r2_tw);
+        id = view.findViewById(R.id.tv_r2_id);
+        numRec = view.findViewById(R.id.tv_r2_rec1);
+        carNum = view.findViewById(R.id.tv_r2_car_num);
+        phone = view.findViewById(R.id.tv_r2_phone);
+        carModel = view.findViewById(R.id.tv_r2_car_model);
+        note = view.findViewById(R.id.tv_r2_zak_note);
+        diagnost = view.findViewById(R.id.tv_r2_diagnost);
+        result = view.findViewById(R.id.tv_r2_result);
+        summa = view.findViewById(R.id.tv_r2_summ);
+        datBeg = view.findViewById(R.id.tv_r2_dat_b);
+        datEnd = view.findViewById(R.id.tv_r2_dat_e);
+
+        rSaveButton = view.findViewById(R.id.add_rec2);
         rSaveButton.setBackgroundColor(Color.GRAY);
-        // ставим текущую дате в поле дата/тайм
+
+
+        // ставим текущую дате в поле дата/тайм - если это создание нового, если обновление не трогаем поле
         long timestampMillis = System.currentTimeMillis();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         String formattedDate = sdf.format(new Date(timestampMillis));
-        datTime.setText(formattedDate);
+        datBeg.setText(formattedDate);
 
 
         myDB = new Role1DBHelper(getActivity());
-        numRec.setText(String.valueOf(myDB.Role1getMaxNum() + 1));
+        id.setText(String.valueOf(myDB.Role2GetMaxNum() + 1));// создаем новый заказ-наряд номер максимум из имеющихся+1
+
 
         boolean isUpdate = false;
         Bundle bundle = getArguments();
         if (bundle != null) {
             isUpdate = true; // если прилетел свиток то это не новая запись а обновление старой, потому ведем себя иначе
-            numRec.setText(String.valueOf(bundle.getInt("zakNum")));
-            carNum.setText(bundle.getString("zakCarNum"));
-            datTime.setText(bundle.getString("zakDateTime"));
-            phone.setText(bundle.getString("zakPhone"));
-            carModel.setText(bundle.getString("zakCarModel"));
-            note.setText(bundle.getString("zakNote"));
-            rSaveButton.setBackgroundColor(Color.BLUE);
+            // Если прилетел список то поле numRec принимаем и делаем закрытым для редактирования!!!!!!
+//            numRec.setText(String.valueOf(bundle.getInt("zakNum")));
+//            carNum.setText(bundle.getString("zakCarNum"));
+//            datTime.setText(bundle.getString("zakDateTime"));
+//            phone.setText(bundle.getString("zakPhone"));
+//            carModel.setText(bundle.getString("zakCarModel"));
+//            note.setText(bundle.getString("zakNote"));
+//            rSaveButton.setBackgroundColor(Color.BLUE);
             tv.setText("Редактирование существующей записи");
-//
-//            int t1 = bundle.getInt("id");
-//            String t2 = bundle.getString("user");
-//            String t3 = bundle.getString("passw");
-//            int t4 = bundle.getInt("role");
-
-//            mUser.setText(t2);
-//            mPasw.setText(t3);
-//            mRole.setText(String.valueOf(t4));
-//            if (t2.length() > 0) {
-//                mSaveButton.setEnabled(false);
-//            }
         }
         if (isUpdate){
             numRec.setFocusable(false);
@@ -144,31 +143,42 @@ public class AddNewRecRole2 extends BottomSheetDialogFragment {
         });
 
 
+        // СОХРАНЯЕМ
         boolean finalIsUpdate = isUpdate;
         rSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // проверяем нет ли записи с тактим же номером задачи
-                int zakN = 0;
-                if (!numRec.getText().toString().isEmpty()) {
-                    zakN = Integer.parseInt(numRec.getText().toString());
+//                int zakN = 0;
+//                if (!numRec.getText().toString().isEmpty()) {
+//                    zakN = Integer.parseInt(id.getText().toString());
+//                }
+                if (numRec.getText().toString().isEmpty()){
+                    numRec.setText("0");
                 }
+                int nRec = Integer.parseInt(numRec.getText().toString());
                 String carN = carNum.getText().toString();
-                String datN = datTime.getText().toString();
                 String phoneN = phone.getText().toString();
                 String modelN = carModel.getText().toString();
                 String noteN = note.getText().toString();
-                int complN = 0;
+                String diagn = diagnost.getText().toString();
+                String resul = result.getText().toString();
+                if (summa.getText().toString().isEmpty()) summa.setText("0");
+                int sum = Integer.parseInt(summa.getText().toString());
+                String dat1 = datBeg.getText().toString();
+                String dat2 = datEnd.getText().toString();
+
+                int complN = 0; //
                 if (!carN.isEmpty() && !phoneN.isEmpty() && !numRec.getText().toString().isEmpty()) {
                     if (finalIsUpdate) {
-                        myDB.Role1updateRecord(bundle.getInt("id"), zakN, carN, datN, phoneN, modelN, noteN, complN);
+                        myDB.Role2updateRecord(bundle.getInt("id"), nRec, carN, phoneN, modelN, noteN,diagn, resul, sum ,dat1, dat2, complN);
                         dismiss();
                     } else {
-                        if (!myDB.Role1checkNumRecord(zakN)){
-                            boolean tmp= myDB.Role1addRecord(zakN, carN, datN, phoneN, modelN, noteN, complN);
+//                        if (!myDB.Role2checkNumRecord(nRec)){
+                            boolean tmp= myDB.Role2AddRecord(nRec, carN, phoneN, modelN, noteN, diagn, resul, sum, dat1, dat2, complN );
                             if (!tmp) Toast.makeText(getContext(), "Ошибка БД. Запись не добавлена!!!", Toast.LENGTH_SHORT).show();
                             dismiss();
-                        } else Toast.makeText(getContext(), "Запись с таким номером уже существует. Укажите другой номер...", Toast.LENGTH_SHORT).show();
+//                        } else Toast.makeText(getContext(), "Запись с таким номером уже существует. Укажите другой номер...", Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
