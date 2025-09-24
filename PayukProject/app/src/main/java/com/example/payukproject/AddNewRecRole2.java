@@ -2,6 +2,7 @@ package com.example.payukproject;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -31,6 +32,8 @@ public class AddNewRecRole2 extends BottomSheetDialogFragment {
     private Button rSaveButton;
     private Role1DBHelper myDB;
     private TextView tv, id;
+
+    String bandType="0";
 
     public static AddNewRecRole2 newInstance() {
         return new AddNewRecRole2();
@@ -62,7 +65,8 @@ public class AddNewRecRole2 extends BottomSheetDialogFragment {
         datEnd = view.findViewById(R.id.tv_r2_dat_e);
 
         rSaveButton = view.findViewById(R.id.add_rec2);
-        rSaveButton.setBackgroundColor(Color.GRAY);
+        rSaveButton.setBackgroundColor(Color.BLUE);
+//        rSaveButton.setBackgroundColor(Color.GRAY);
 
 
         // ставим текущую дате в поле дата/тайм - если это создание нового, если обновление не трогаем поле
@@ -79,15 +83,23 @@ public class AddNewRecRole2 extends BottomSheetDialogFragment {
         boolean isUpdate = false;
         Bundle bundle = getArguments();
         if (bundle != null) {
-            isUpdate = true; // если прилетел свиток то это не новая запись а обновление старой, потому ведем себя иначе
+//            isUpdate = true; // если прилетел свиток то это не новая запись а обновление старой, потому ведем себя иначе
             // Если прилетел список то поле numRec принимаем и делаем закрытым для редактирования!!!!!!
-//            numRec.setText(String.valueOf(bundle.getInt("zakNum")));
-//            carNum.setText(bundle.getString("zakCarNum"));
+
+            numRec.setText(String.valueOf(bundle.getInt("zakNum")));
+            carNum.setText(bundle.getString("zakCarNum"));
 //            datTime.setText(bundle.getString("zakDateTime"));
-//            phone.setText(bundle.getString("zakPhone"));
-//            carModel.setText(bundle.getString("zakCarModel"));
-//            note.setText(bundle.getString("zakNote"));
-//            rSaveButton.setBackgroundColor(Color.BLUE);
+            phone.setText(bundle.getString("zakPhone"));
+            carModel.setText(bundle.getString("zakCarModel"));
+            note.setText(bundle.getString("zakNote"));
+            bandType= bundle.getString("bandleType");
+            if (bandType.equals("1")) {
+                isUpdate=false;
+                rSaveButton.setEnabled(true);
+                rSaveButton.setBackgroundColor(Color.BLUE);
+            } else isUpdate=true;
+
+            rSaveButton.setBackgroundColor(Color.BLUE);
             tv.setText("Редактирование существующей записи");
         }
         if (isUpdate){
@@ -178,6 +190,10 @@ public class AddNewRecRole2 extends BottomSheetDialogFragment {
                             boolean tmp= myDB.Role2AddRecord(nRec, carN, phoneN, modelN, noteN, diagn, resul, sum, dat1, dat2, complN );
                             if (!tmp) Toast.makeText(getContext(), "Ошибка БД. Запись не добавлена!!!", Toast.LENGTH_SHORT).show();
                             dismiss();
+                            if (bandType.equals("1")){
+                                Intent intent = new Intent(getActivity(), Role2Act.class);
+                                startActivity(intent);
+                            }
 //                        } else Toast.makeText(getContext(), "Запись с таким номером уже существует. Укажите другой номер...", Toast.LENGTH_SHORT).show();
                     }
 

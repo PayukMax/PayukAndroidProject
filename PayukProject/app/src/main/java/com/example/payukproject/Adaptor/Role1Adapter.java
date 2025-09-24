@@ -55,6 +55,7 @@ public class Role1Adapter extends RecyclerView.Adapter<Role1Adapter.Role1ViewHol
             public void onClick(View v) {
                 Intent intent = new Intent(context, RecordDetail.class);
                 intent.putExtra("id", String.valueOf(id));
+                intent.putExtra("role", String.valueOf(1));
                 context.startActivity(intent);
             }
         });

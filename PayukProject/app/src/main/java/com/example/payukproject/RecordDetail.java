@@ -8,8 +8,10 @@ import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,9 +26,9 @@ import java.util.Objects;
 
 public class RecordDetail extends AppCompatActivity {
     TextView zakNum, zakCarNum, zakDateTime, zakPhone, zakCarModel, zakNote;
-//    Button btn;
+    Button btn_zak_nar;
     Role1DBHelper dbHelper;
-    int id;
+    int id, role;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +45,45 @@ public class RecordDetail extends AppCompatActivity {
         zakNote = findViewById(R.id.tv_zakNote);
 
 
-//        btn = findViewById(R.id.btn_back);
+        btn_zak_nar = findViewById(R.id.btn_new_naryad);
         Intent intent = getIntent();
         id = Integer.parseInt(Objects.requireNonNull(intent.getStringExtra("id")));
-
+// здесь добавим чтение признака что из 2й роли - значит делаем видимой кнопку ОТКРЫТЬ З/Н - при ее нажатии переходим на активити нового заказ наряда с пред заполеннными полями
+        role=0;
+        role = Integer.parseInt(Objects.requireNonNull(intent.getStringExtra("role")));
+        if (role==2){
+            btn_zak_nar.setEnabled(true);
+        } else btn_zak_nar.setEnabled(false);
         loadDataById();
+
+        btn_zak_nar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                finish();
+                Bundle bundle = new Bundle();
+                bundle.putInt("zakNum", Integer.parseInt(zakNum.getText().toString()));
+                bundle.putString("zakCarNum", zakCarNum.getText().toString());
+                bundle.putString("zakPhone", zakPhone.getText().toString());
+                bundle.putString("zakCarModel", zakCarModel.getText().toString());
+                bundle.putString("zakNote", zakNote.getText().toString());
+                bundle.putString("bandleType","1"); // тип пересылки - 1 создано на основании предв записи, 2 - редактирование созлданной ранее записи
+
+
+//                Intent intent1 = new Intent(RecordDetail.this, Record2Detail.class);
+//                intent1.putExtra("zakNum",Integer.parseInt(zakNum.getText().toString()));
+//                intent1.putExtra("zakCarNum",zakCarNum.getText().toString());
+//                intent1.putExtra("zakPhone",zakPhone.getText().toString());
+//                startActivity(intent1);
+
+                AddNewRecRole2 newRec2 = new AddNewRecRole2();
+                newRec2.setArguments(bundle);
+//                newRec2.show(newRec2.requireActivity().getSupportFragmentManager(), newRec2.getTag());
+                newRec2.show(getSupportFragmentManager(), newRec2.getTag());
+//                AddNewRecRole2.newInstance().show(getSupportFragmentManager(),AddNewRecRole2.TAG);
+
+//                finish();
+                 }
+        });
 
     }
 

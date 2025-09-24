@@ -149,8 +149,19 @@
         app:layout_constraintStart_toEndOf="@+id/text6"
         app:layout_constraintTop_toTopOf="@+id/text6" />
 
+    <Button
+        android:id="@+id/btn_new_naryad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Открыть заказ-наряд"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text6" />
 
-<!--    <Button-->
+
+    <!--    <Button-->
 <!--        android:id="@+id/btn_back"-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content"-->
