@@ -49,7 +49,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/role2_rv2"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="280dp"
         android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +59,7 @@
         android:id="@+id/add_naryad"
         android:layout_width="150dp"
         android:layout_height="100dp"
-        android:text="Создать наряд"
+        android:text="Открыть наряд"
         android:layout_marginTop="20dp"
         android:layout_marginStart="5dp"
         android:background="@drawable/big_btn"

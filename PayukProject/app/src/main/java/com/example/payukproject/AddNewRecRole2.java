@@ -33,7 +33,7 @@ public class AddNewRecRole2 extends BottomSheetDialogFragment {
     private Role1DBHelper myDB;
     private TextView tv, id;
 
-    String bandType="0";
+    String bandType = "0";
 
     public static AddNewRecRole2 newInstance() {
         return new AddNewRecRole2();
@@ -92,19 +92,35 @@ public class AddNewRecRole2 extends BottomSheetDialogFragment {
             phone.setText(bundle.getString("zakPhone"));
             carModel.setText(bundle.getString("zakCarModel"));
             note.setText(bundle.getString("zakNote"));
-            bandType= bundle.getString("bandleType");
+            bandType = bundle.getString("bandleType");// тип пересылки - 1 создано на основании предв записи, 2 - редактирование созлданной ранее записи
             if (bandType.equals("1")) {
-                isUpdate=false;
+                isUpdate = false;
                 rSaveButton.setEnabled(true);
                 rSaveButton.setBackgroundColor(Color.BLUE);
-            } else isUpdate=true;
+                tv.setText("Создание наряда на основании предварительной записи");
+            } else {
+                isUpdate = true;
+                tv.setText("Редактирование существующей записи");
+                id.setText(String.valueOf(bundle.getInt("id")));
+//                numRec.setText(bundle.getString("zakNum"));
+//                carNum.setText(bundle.getString("zakCarNum"));
+//                phone.setText(bundle.getString("zakPhone"));
+//                carModel.setText(bundle.getString("zakCarModel"));
+//                note.setText(bundle.getString("zakNote"));
+                diagnost.setText(bundle.getString("diagnost"));
+                result.setText(bundle.getString("result"));
+                summa.setText(String.valueOf(bundle.getInt("summa")));
+                datBeg.setText(bundle.getString("datBegin"));
+                datEnd.setText(bundle.getString("datEnd"));
+// добавить признак complete !!!!
+                rSaveButton.setEnabled(true);
+                rSaveButton.setBackgroundColor(Color.BLUE);
 
-            rSaveButton.setBackgroundColor(Color.BLUE);
-            tv.setText("Редактирование существующей записи");
+            }
         }
-        if (isUpdate){
-            numRec.setFocusable(false);
-        }
+//        if (isUpdate) {
+//            numRec.setFocusable(false);
+//        }
 
         carNum.addTextChangedListener(new TextWatcher() {
             @Override
@@ -165,7 +181,7 @@ public class AddNewRecRole2 extends BottomSheetDialogFragment {
 //                if (!numRec.getText().toString().isEmpty()) {
 //                    zakN = Integer.parseInt(id.getText().toString());
 //                }
-                if (numRec.getText().toString().isEmpty()){
+                if (numRec.getText().toString().isEmpty()) {
                     numRec.setText("0");
                 }
                 int nRec = Integer.parseInt(numRec.getText().toString());
@@ -183,17 +199,18 @@ public class AddNewRecRole2 extends BottomSheetDialogFragment {
                 int complN = 0; //
                 if (!carN.isEmpty() && !phoneN.isEmpty() && !numRec.getText().toString().isEmpty()) {
                     if (finalIsUpdate) {
-                        myDB.Role2updateRecord(bundle.getInt("id"), nRec, carN, phoneN, modelN, noteN,diagn, resul, sum ,dat1, dat2, complN);
+                        myDB.Role2updateRecord(bundle.getInt("id"), nRec, carN, phoneN, modelN, noteN, diagn, resul, sum, dat1, dat2, complN);
                         dismiss();
                     } else {
 //                        if (!myDB.Role2checkNumRecord(nRec)){
-                            boolean tmp= myDB.Role2AddRecord(nRec, carN, phoneN, modelN, noteN, diagn, resul, sum, dat1, dat2, complN );
-                            if (!tmp) Toast.makeText(getContext(), "Ошибка БД. Запись не добавлена!!!", Toast.LENGTH_SHORT).show();
-                            dismiss();
-                            if (bandType.equals("1")){
-                                Intent intent = new Intent(getActivity(), Role2Act.class);
-                                startActivity(intent);
-                            }
+                        boolean tmp = myDB.Role2AddRecord(nRec, carN, phoneN, modelN, noteN, diagn, resul, sum, dat1, dat2, complN);
+                        if (!tmp)
+                            Toast.makeText(getContext(), "Ошибка БД. Запись не добавлена!!!", Toast.LENGTH_SHORT).show();
+                        dismiss();
+                        if (bandType.equals("1")) {
+                            Intent intent = new Intent(getActivity(), Role2Act.class);
+                            startActivity(intent);
+                        }
 //                        } else Toast.makeText(getContext(), "Запись с таким номером уже существует. Укажите другой номер...", Toast.LENGTH_SHORT).show();
                     }
 
@@ -204,7 +221,6 @@ public class AddNewRecRole2 extends BottomSheetDialogFragment {
             }
         });
     }
-
 
 
     @Override

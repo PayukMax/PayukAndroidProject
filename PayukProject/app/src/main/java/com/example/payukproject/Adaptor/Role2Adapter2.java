@@ -2,6 +2,7 @@ package com.example.payukproject.Adaptor;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.payukproject.AddNewRecRole1;
+import com.example.payukproject.AddNewRecRole2;
 import com.example.payukproject.Model.Role1Data;
 import com.example.payukproject.Model.Role2Data;
 import com.example.payukproject.R;
@@ -67,6 +70,10 @@ public class Role2Adapter2 extends RecyclerView.Adapter<Role2Adapter2.Role2ViewH
 
     }
 
+    public Context getContext() {
+        return activity;
+    }
+
     @Override
     public int getItemCount() {
         return recList2.size();
@@ -75,6 +82,39 @@ public class Role2Adapter2 extends RecyclerView.Adapter<Role2Adapter2.Role2ViewH
     public void setUser(List<Role2Data> List) {
         this.recList2 = List;
         notifyDataSetChanged();
+    }
+
+    public void deleteRecord(int position) {
+        Role2Data item = recList2.get(position);
+        roleDB.Role2deleteRecord(item.getId());
+        recList2.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void editRecord(int position) {
+
+        Role2Data item = recList2.get(position);
+        Bundle bundle = new Bundle();
+
+        bundle.putString("bandleType", "2");
+        bundle.putInt("id", item.getId());
+        bundle.putInt("zakNum", item.getRemNum());
+        bundle.putString("zakCarNum", item.getRemCarNum());
+//        bundle.putString("zakDateTime", item.getRemDateBegin());
+        bundle.putString("zakPhone", item.getRemPhone());
+        bundle.putString("zakCarModel", item.getRemCarModel());
+        bundle.putString("zakNote", item.getRemNote());
+        bundle.putString("diagnost", item.getRemDiagnost());
+        bundle.putString("result", item.getRemResult());
+        bundle.putInt("summa", item.getRemSumma());
+        bundle.putString("datBegin", item.getRemDateBegin());
+        bundle.putString("datEnd", item.getRemDateEnd());
+        bundle.putInt("completed", item.getRemComplete());
+        AddNewRecRole2 nRecord = new AddNewRecRole2();
+        nRecord.setArguments(bundle);
+        nRecord.show(activity.getSupportFragmentManager(), nRecord.getTag());
+//          Toast.makeText(activity.getApplicationContext(), "EDIT!!!!!", Toast.LENGTH_SHORT).show();
+//        notifyDataSetChanged();
     }
 
     public static class Role2ViewHolder2 extends RecyclerView.ViewHolder {

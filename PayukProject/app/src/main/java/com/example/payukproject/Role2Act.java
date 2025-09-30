@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -59,6 +60,9 @@ public class Role2Act extends AppCompatActivity implements OnDialogCloseListener
         rv2.setAdapter(r2Adapter);
         r2List = role1DB.Role2getAllRecords();
         r2Adapter.setUser(r2List);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RVTHelperRole2(r2Adapter));
+        itemTouchHelper.attachToRecyclerView(rv2);
 
 
         // ручное добавление нового заказ-наряда
