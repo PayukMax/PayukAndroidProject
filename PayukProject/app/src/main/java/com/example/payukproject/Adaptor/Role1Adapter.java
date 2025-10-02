@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -48,7 +49,16 @@ public class Role1Adapter extends RecyclerView.Adapter<Role1Adapter.Role1ViewHol
         holder.zakaz_id.setText(String.valueOf(item.getZakNum()));
         holder.car_num.setText(item.getZakCarNum());
         holder.dat_time.setText(item.getZakDateTime());
-//      добавить заполнение чекбокса в строке RV
+//        if (item.getCompleted()==0) holder.compl.setEnabled(false); else holder.compl.setEnabled(true);
+        if (item.getCompleted() == 0) {
+            holder.compl.setChecked(false);
+            holder.compl.setEnabled(false);
+
+        } else {
+            holder.compl.setChecked(true);
+            holder.compl.setEnabled(false);
+        }
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() { // было .itemView. стало relativeLayout
             @Override
@@ -104,13 +114,15 @@ public class Role1Adapter extends RecyclerView.Adapter<Role1Adapter.Role1ViewHol
     }
 
     public static class Role1ViewHolder extends RecyclerView.ViewHolder {
-        TextView zakaz_id, car_num, dat_time; // добавить признак исполнения заявки
+        TextView zakaz_id, car_num, dat_time;
+        CheckBox compl; // добавить признак исполнения заявки
 
         public Role1ViewHolder(@NonNull View itemView) {
             super(itemView);
             zakaz_id = itemView.findViewById(R.id.tv_num);
             car_num = itemView.findViewById(R.id.tv_CarNum);
             dat_time = itemView.findViewById(R.id.tv_dat);
+            compl = itemView.findViewById(R.id.tv_complete);
             // добавить признак исполнения заявки
         }
     }

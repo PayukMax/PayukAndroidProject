@@ -48,7 +48,7 @@ public class Role2Act extends AppCompatActivity implements OnDialogCloseListener
         rv1.setLayoutManager(new LinearLayoutManager(this));
         rv1.setAdapter(rAdapter);
 
-        rList = role1DB.Role1getAllRecords();
+        rList = role1DB.Role1getAllRecords(false);
         rAdapter.setUser(rList);
 
 

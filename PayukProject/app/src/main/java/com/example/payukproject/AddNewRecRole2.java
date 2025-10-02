@@ -88,16 +88,17 @@ public class AddNewRecRole2 extends BottomSheetDialogFragment {
 
             numRec.setText(String.valueOf(bundle.getInt("zakNum")));
             carNum.setText(bundle.getString("zakCarNum"));
-//            datTime.setText(bundle.getString("zakDateTime"));
             phone.setText(bundle.getString("zakPhone"));
             carModel.setText(bundle.getString("zakCarModel"));
             note.setText(bundle.getString("zakNote"));
             bandType = bundle.getString("bandleType");// тип пересылки - 1 создано на основании предв записи, 2 - редактирование созлданной ранее записи
+
             if (bandType.equals("1")) {
                 isUpdate = false;
                 rSaveButton.setEnabled(true);
                 rSaveButton.setBackgroundColor(Color.BLUE);
                 tv.setText("Создание наряда на основании предварительной записи");
+
             } else {
                 isUpdate = true;
                 tv.setText("Редактирование существующей записи");
@@ -112,15 +113,16 @@ public class AddNewRecRole2 extends BottomSheetDialogFragment {
                 summa.setText(String.valueOf(bundle.getInt("summa")));
                 datBeg.setText(bundle.getString("datBegin"));
                 datEnd.setText(bundle.getString("datEnd"));
+
 // добавить признак complete !!!!
                 rSaveButton.setEnabled(true);
                 rSaveButton.setBackgroundColor(Color.BLUE);
 
             }
         }
-//        if (isUpdate) {
-//            numRec.setFocusable(false);
-//        }
+        if (isUpdate) {
+            numRec.setFocusable(false);
+        }
 
         carNum.addTextChangedListener(new TextWatcher() {
             @Override
@@ -208,6 +210,9 @@ public class AddNewRecRole2 extends BottomSheetDialogFragment {
                             Toast.makeText(getContext(), "Ошибка БД. Запись не добавлена!!!", Toast.LENGTH_SHORT).show();
                         dismiss();
                         if (bandType.equals("1")) {
+                            // здесь добавляем установку в первой таблице в записи nRec поле complete в значение 1
+                            tmp = myDB.Role1SetComplete(nRec,true);
+                            if (!tmp) Toast.makeText(getContext(), "In 1 table not complete set!!!", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getActivity(), Role2Act.class);
                             startActivity(intent);
                         }

@@ -16,6 +16,7 @@ public class DBTables {
     public static final String Table1Create = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_2 + " INTEGER NOT NULL," + COL_3 + " TEXT NOT NULL, " + COL_4 + " INTEGER NOT NULL, "+COL_5+" TEXT NOT NULL,"+COL_6+" TEXT, "+COL_7+" TEXT, "+COL_8+" INTEGER);";
     public static final String Table1Drop = "DROP TABLE IF EXISTS " + TABLE_NAME + " ;";
     public static final String Table1GETMaxNum = "SELECT MAX("+COL_2+") FROM "+TABLE_NAME+" ;";
+    public static final String Table1GETNoComplete = "SELECT * FROM "+TABLE_NAME+" WHERE "+COL_8+"=0 ;";
 
 
     public static final String TABLE2_NAME = "role2";
