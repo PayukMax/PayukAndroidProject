@@ -40,8 +40,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
-        android:text="Открытые наряды"
         android:layout_marginBottom="5dp"
+        android:text="Открытые наряды"
         app:layout_constraintBottom_toTopOf="@+id/role2_rv2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -55,16 +55,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/role2_rv1" />
 
+    <Switch
+        android:id="@+id/role2_sw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Отобразить закрытые наряды "
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/role2_rv2" />
+
     <Button
         android:id="@+id/add_naryad"
-        android:layout_width="150dp"
-        android:layout_height="100dp"
-        android:text="Открыть наряд"
-        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/big_btn"
+        android:text="Открыть новый наряд"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/role2_rv2" />
+        app:layout_constraintTop_toBottomOf="@+id/role2_sw" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

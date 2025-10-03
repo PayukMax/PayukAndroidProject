@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,6 +58,15 @@ public class Role2Adapter2 extends RecyclerView.Adapter<Role2Adapter2.Role2ViewH
         holder.datB.setText(item.getRemDateBegin());
         holder.datE.setText(item.getRemDateEnd());
         holder.summa.setText(String.valueOf(item.getRemSumma()));
+        if (item.getRemComplete() == 0) {
+            holder.compl.setChecked(false);
+            holder.compl.setEnabled(false);
+
+        } else {
+            holder.compl.setChecked(true);
+            holder.compl.setEnabled(false);
+        }
+
 ////      добавить заполнение чекбокса в строке RV
 
         holder.itemView.setOnClickListener(new View.OnClickListener() { // было .itemView. стало relativeLayout
@@ -119,6 +129,7 @@ public class Role2Adapter2 extends RecyclerView.Adapter<Role2Adapter2.Role2ViewH
 
     public static class Role2ViewHolder2 extends RecyclerView.ViewHolder {
         TextView item_id, tel_zak, car_num, phone, datB, datE, summa; // актуальную структуру!!!!!!!!
+        CheckBox compl;
 
         public Role2ViewHolder2(@NonNull View itemView) {
             super(itemView);
@@ -129,6 +140,7 @@ public class Role2Adapter2 extends RecyclerView.Adapter<Role2Adapter2.Role2ViewH
             datB = itemView.findViewById(R.id.item_dat_beg);
             datE = itemView.findViewById(R.id.item_dat_end);
             summa = itemView.findViewById(R.id.item_summa);
+            compl = itemView.findViewById(R.id.item_cb);
 
             // добавить признак исполнения заявки
         }

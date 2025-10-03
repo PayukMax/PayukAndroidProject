@@ -13,8 +13,11 @@ import com.example.payukproject.DBTables;
 import com.example.payukproject.Model.Role1Data;
 import com.example.payukproject.Model.Role2Data;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class Role1DBHelper extends SQLiteOpenHelper {
 
@@ -55,7 +58,7 @@ public class Role1DBHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE2 = DBTables.Table2Create;
     private static final String DROP_TABLE2 = DBTables.Table2Drop;
-
+    private static final String GETNOTCOMPLETE2 = DBTables.Table2GETNoComplete;
 
     public Role1DBHelper(@Nullable Context context) {
         super(context, dbName, null, 1);
@@ -213,14 +216,19 @@ public class Role1DBHelper extends SQLiteOpenHelper {
 
 
     @SuppressLint("Range")
-    public List<Role2Data> Role2getAllRecords() {
+    public List<Role2Data> Role2getAllRecords(boolean flag) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = null;
         List<Role2Data> recordList = new ArrayList<>();
 
         db.beginTransaction();
         try {
-            cursor = db.query(DBTables.TABLE2_NAME, null, null, null, null, null, null, null);
+            if (flag) {
+                cursor = db.query(DBTables.TABLE2_NAME, null, null, null, null, null, null, null);
+            } else {
+                cursor = db.rawQuery(GETNOTCOMPLETE2, null);
+            }
+
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
                     do {
@@ -308,14 +316,33 @@ public class Role1DBHelper extends SQLiteOpenHelper {
         return tmp;
     }
 
-
-    public boolean Role2checkNumRecord(int zakN) {// проверяем записи на предмет совпадения кода переданного снаружи и кода заказа в имеющихся записях. Есть совпадение - true
-        List<Role2Data> list = Role2getAllRecords();
-
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getId() == zakN) return true;
+    public boolean Role2SetComplete(int zakazId, boolean b) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+//        cv.put(DBTables.COL_2, zakazId);
+        if (b) {
+            long timestampMillis = System.currentTimeMillis();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            String formattedDate = sdf.format(new Date(timestampMillis));
+            cv.put(DBTables.T2_C_11, formattedDate);
+            cv.put(DBTables.T2_C_12, 1);
+        } else {
+            cv.put(DBTables.T2_C_11, "XXXX-XX-XX yy:yy:yy");
+            cv.put(DBTables.T2_C_12, 0);
         }
-        return false;
+
+        int x = db.update(TABLE_NAME2, cv, "id=?", new String[]{String.valueOf(zakazId)});
+        if (x <= 0) return false;
+        else return true;
     }
+
+//    public boolean Role2checkNumRecord(int zakN) {// проверяем записи на предмет совпадения кода переданного снаружи и кода заказа в имеющихся записях. Есть совпадение - true
+//        List<Role2Data> list = Role2getAllRecords();
+//
+//        for (int i = 0; i < list.size(); i++) {
+//            if (list.get(i).getId() == zakN) return true;
+//        }
+//        return false;
+//    }
 
 }

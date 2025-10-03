@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +24,7 @@ public class Record2Detail extends AppCompatActivity {
     TextView tv_id, id_nar, car_num, phone, car_model, note, diagnost, result, summa, dat_B, dat_E;
     Role1DBHelper dbHelper;
     int id = 0;
-    Button btn_back;
+    Button btn_back, btn_closeNar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +45,28 @@ public class Record2Detail extends AppCompatActivity {
         dat_B = findViewById(R.id.tv2_r2_dat_b);
         dat_E = findViewById(R.id.tv2_r2_dat_e);
         btn_back = findViewById(R.id.back);
+        btn_closeNar = findViewById(R.id.btn_close_naryad);
 
         Intent intent = getIntent();
         id = Integer.parseInt(Objects.requireNonNull(intent.getStringExtra("id")));
         tv_id.setText(String.valueOf(id));
+
+        btn_closeNar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (summa.getText().toString().isEmpty()) {
+                    Toast.makeText(Record2Detail.this, "Сумма не может быть пустой...", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (setComplete(id)) {
+                        Toast.makeText(Record2Detail.this, "Complete - OK", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Record2Detail.this, Role2Act.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // подчищаем историю чтобы не переместился кнопкой НАЗАД
+                        startActivity(intent);
+                        // переход на основное активити роли 2 с зачисткой истории переходов
+                    }
+                }
+            }
+        });
 
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +80,17 @@ public class Record2Detail extends AppCompatActivity {
         loadData2ById();
 
     }
+
+    private boolean setComplete(int id) {
+        if (dbHelper.Role2SetComplete(id, true)) {
+            Toast.makeText(this, "Наряд успешно закрыт...", Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            Toast.makeText(this, "Закрыть наряд не удалось!!!!!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
 
     @SuppressLint("SetTextI18n")
     private void loadData2ById() {
@@ -80,9 +110,16 @@ public class Record2Detail extends AppCompatActivity {
                 summa.setText("" + cursor.getString(cursor.getColumnIndexOrThrow(DBTables.T2_C_9)));
                 dat_B.setText("" + cursor.getString(cursor.getColumnIndexOrThrow(DBTables.T2_C_10)));
                 dat_E.setText("" + cursor.getString(cursor.getColumnIndexOrThrow(DBTables.T2_C_11)));
+                if (cursor.getInt(cursor.getColumnIndexOrThrow(DBTables.T2_C_12)) == 1) {
+                    btn_closeNar.setEnabled(false);
+                } else {
+                    btn_closeNar.setEnabled(true);
+                }
 
             } while (cursor.moveToNext());
         }
         db.close();
     }
+
+
 }

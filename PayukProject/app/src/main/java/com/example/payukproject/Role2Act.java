@@ -1,9 +1,11 @@
 package com.example.payukproject;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +34,9 @@ public class Role2Act extends AppCompatActivity implements OnDialogCloseListener
     private Role2Adapter1 rAdapter;
     private Role2Adapter2 r2Adapter;
     Button addRecBtn;
+    Switch r2Sw;
+    private boolean flagRecords;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,8 @@ public class Role2Act extends AppCompatActivity implements OnDialogCloseListener
         setContentView(R.layout.activity_role2);
 
         addRecBtn = findViewById(R.id.add_naryad);
+        r2Sw = findViewById(R.id.role2_sw);
+        flagRecords = r2Sw.isChecked();
 
         rv1 = findViewById(R.id.role2_rv1);
         rList = new ArrayList<>();
@@ -58,11 +65,22 @@ public class Role2Act extends AppCompatActivity implements OnDialogCloseListener
         rv2.setHasFixedSize(true);
         rv2.setLayoutManager(new LinearLayoutManager(this));
         rv2.setAdapter(r2Adapter);
-        r2List = role1DB.Role2getAllRecords();
+        r2List = role1DB.Role2getAllRecords(flagRecords);
         r2Adapter.setUser(r2List);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RVTHelperRole2(r2Adapter));
         itemTouchHelper.attachToRecyclerView(rv2);
+
+        r2Sw.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onClick(View v) {
+                flagRecords=r2Sw.isChecked();
+                r2List = role1DB.Role2getAllRecords(flagRecords);
+                r2Adapter.setUser(r2List);
+                r2Adapter.notifyDataSetChanged();
+            }
+        });
 
 
         // ручное добавление нового заказ-наряда
@@ -78,7 +96,7 @@ public class Role2Act extends AppCompatActivity implements OnDialogCloseListener
 
     @Override
     public void onDialogClose(DialogInterface dialogInterface) {
-        r2List = role1DB.Role2getAllRecords();
+        r2List = role1DB.Role2getAllRecords(flagRecords);
         r2Adapter.setUser(r2List);
         r2Adapter.notifyDataSetChanged();
     }

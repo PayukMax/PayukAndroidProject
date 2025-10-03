@@ -36,4 +36,5 @@ public class DBTables {
     public static final String Table2Create = "CREATE TABLE IF NOT EXISTS " + TABLE2_NAME + " (" + T2_C_1 + " INTEGER PRIMARY KEY AUTOINCREMENT," + T2_C_2 + " INTEGER NOT NULL," + T2_C_3 + " TEXT NOT NULL, " + T2_C_4 + " TEXT NOT NULL,"+T2_C_5+" TEXT,"+T2_C_6+" TEXT, "+T2_C_7+" TEXT,"+T2_C_8+" TEXT,"+T2_C_9+" INTEGER,"+T2_C_10+" TEXT NOT NULL ,"+T2_C_11+" TEXT, "+T2_C_12+" INTEGER );";
     public static final String Table2Drop = "DROP TABLE IF EXISTS " + TABLE2_NAME + " ;";
     public static final String Table2GETMaxNum = "SELECT MAX("+T2_C_1+") FROM "+TABLE2_NAME+" ;";
+    public static final String Table2GETNoComplete = "SELECT * FROM "+TABLE2_NAME+" WHERE "+T2_C_12+"=0 ;";
 }

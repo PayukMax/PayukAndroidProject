@@ -237,6 +237,19 @@
         app:layout_constraintTop_toBottomOf="@id/tv2_r2_summ" />
 
     <Button
+        android:id="@+id/btn_close_naryad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/big_btn"
+        android:text="Закрыть наряд"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv2_r2_dat_b" />
+
+    <Button
         android:id="@+id/back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -248,7 +261,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv2_r2_dat_b" />
+        app:layout_constraintTop_toBottomOf="@+id/close_naryad" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
