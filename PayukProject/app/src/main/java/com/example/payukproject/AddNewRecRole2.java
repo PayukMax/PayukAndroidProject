@@ -201,11 +201,11 @@ public class AddNewRecRole2 extends BottomSheetDialogFragment {
                 int complN = 0; //
                 if (!carN.isEmpty() && !phoneN.isEmpty() && !numRec.getText().toString().isEmpty()) {
                     if (finalIsUpdate) {
-                        myDB.Role2updateRecord(bundle.getInt("id"), nRec, carN, phoneN, modelN, noteN, diagn, resul, sum, dat1, dat2, complN);
+                        myDB.Role2updateRecord(bundle.getInt("id"), nRec, carN, phoneN, modelN, noteN, diagn, resul, sum, dat1, dat2, complN,0);
                         dismiss();
                     } else {
 //                        if (!myDB.Role2checkNumRecord(nRec)){
-                        boolean tmp = myDB.Role2AddRecord(nRec, carN, phoneN, modelN, noteN, diagn, resul, sum, dat1, dat2, complN);
+                        boolean tmp = myDB.Role2AddRecord(nRec, carN, phoneN, modelN, noteN, diagn, resul, sum, dat1, dat2, complN,0);
                         if (!tmp)
                             Toast.makeText(getContext(), "Ошибка БД. Запись не добавлена!!!", Toast.LENGTH_SHORT).show();
                         dismiss();

@@ -32,9 +32,30 @@ public class DBTables {
     public static final String T2_C_10 = "dat_begin";
     public static final String T2_C_11 = "dat_end";
     public static final String T2_C_12 = "complete";
+    public static final String T2_C_13 = "plat"; // признак оплаченного наряда
 
-    public static final String Table2Create = "CREATE TABLE IF NOT EXISTS " + TABLE2_NAME + " (" + T2_C_1 + " INTEGER PRIMARY KEY AUTOINCREMENT," + T2_C_2 + " INTEGER NOT NULL," + T2_C_3 + " TEXT NOT NULL, " + T2_C_4 + " TEXT NOT NULL,"+T2_C_5+" TEXT,"+T2_C_6+" TEXT, "+T2_C_7+" TEXT,"+T2_C_8+" TEXT,"+T2_C_9+" INTEGER,"+T2_C_10+" TEXT NOT NULL ,"+T2_C_11+" TEXT, "+T2_C_12+" INTEGER );";
+
+    public static final String Table2Create = "CREATE TABLE IF NOT EXISTS " + TABLE2_NAME + " (" + T2_C_1 + " INTEGER PRIMARY KEY AUTOINCREMENT," + T2_C_2 + " INTEGER NOT NULL," + T2_C_3 + " TEXT NOT NULL, " + T2_C_4 + " TEXT NOT NULL,"+T2_C_5+" TEXT,"+T2_C_6+" TEXT, "+T2_C_7+" TEXT,"+T2_C_8+" TEXT,"+T2_C_9+" INTEGER,"+T2_C_10+" TEXT NOT NULL ,"+T2_C_11+" TEXT, "+T2_C_12+" INTEGER, "+T2_C_13+" INTEGER );";
     public static final String Table2Drop = "DROP TABLE IF EXISTS " + TABLE2_NAME + " ;";
     public static final String Table2GETMaxNum = "SELECT MAX("+T2_C_1+") FROM "+TABLE2_NAME+" ;";
     public static final String Table2GETNoComplete = "SELECT * FROM "+TABLE2_NAME+" WHERE "+T2_C_12+"=0 ;";
+    public static final String Table2GETCompleteNotPlat = "SELECT * FROM "+TABLE2_NAME+" WHERE "+T2_C_12+"=1 AND "+T2_C_13+"=0 ;";
+    public static final String Table2GETCompleteAndPlat = "SELECT * FROM "+TABLE2_NAME+" WHERE "+T2_C_12+"=1 AND "+T2_C_13+"=1 ;";
+
+
+    public static final String TABLE3_NAME = "role3";
+    public static final String T3_C_1 = "id";
+    public static final String T3_C_2 = "id_nar";
+    public static final String T3_C_3 = "car_num";
+    public static final String T3_C_4 = "zak_phone";
+    public static final String T3_C_5 = "summa";
+    public static final String T3_C_6 = "dat";
+    public static final String T3_C_7 = "note";
+
+    public static final String Table3Create = "CREATE TABLE IF NOT EXISTS " + TABLE3_NAME + " (" + T3_C_1 + " INTEGER PRIMARY KEY AUTOINCREMENT," + T3_C_2 + " INTEGER NOT NULL," + T3_C_3 + " TEXT NOT NULL, " + T3_C_4 + " TEXT NOT NULL,"+T3_C_5+" INTEGER NOT NULL,"+T3_C_6+" TEXT NOT NULL, "+T3_C_7+" TEXT );";
+    public static final String Table3Drop = "DROP TABLE IF EXISTS " + TABLE3_NAME + " ;";
+//    public static final String Table3GETMaxNum = "SELECT MAX("+T2_C_1+") FROM "+TABLE2_NAME+" ;";
+//    public static final String Table2GETNoComplete = "SELECT * FROM "+TABLE2_NAME+" WHERE "+T2_C_12+"=0 ;";
+
+
 }

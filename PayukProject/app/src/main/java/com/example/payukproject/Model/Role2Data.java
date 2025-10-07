@@ -12,7 +12,8 @@ public class Role2Data {
     private int remSumma; // общая сумма выполненных работ для оплаты
     private String remDateBegin;// дата время визита на СТО
     private String remDateEnd;// дата время окончания визита на СТО
-    private int remComplete; // признак исполнения - оплата завершена+заказ закрыт - true
+    private int remComplete; // признак исполнения - заказ закрыт - true
+    private int remPlatComplete; // признак исполнения - оплата совершена - true
 
 
 //    public static final String T2_C_1 = "id";
@@ -31,6 +32,14 @@ public class Role2Data {
 
     public int getId() {
         return id;
+    }
+
+    public int getRemPlatComplete() {
+        return remPlatComplete;
+    }
+
+    public void setRemPlatComplete(int remPlatComplete) {
+        this.remPlatComplete = remPlatComplete;
     }
 
     public void setId(int id) {

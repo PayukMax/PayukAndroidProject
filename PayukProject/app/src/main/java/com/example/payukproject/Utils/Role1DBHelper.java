@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import com.example.payukproject.DBTables;
 import com.example.payukproject.Model.Role1Data;
 import com.example.payukproject.Model.Role2Data;
+import com.example.payukproject.Model.Role3Data;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,9 +33,9 @@ public class Role1DBHelper extends SQLiteOpenHelper {
 //    private static final String COL_6 = DBTables.COL_6;
 //    private static final String COL_7 = DBTables.COL_7;
 //    private static final String COL_8 = DBTables.COL_8;
-    private static final String CREATE_TABLE = DBTables.Table1Create;
+//    private static final String CREATE_TABLE = DBTables.Table1Create;
     //"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_2 + " INTEGER NOT NULL," + COL_3 + " TEXT NOT NULL, " + COL_4 + " INTEGER NOT NULL, "+COL_5+" TEXT NOT NULL,"+COL_6+" TEXT, "+COL_7+" TEXT, "+COL_8+" INTEGER);";
-    private static final String DROP_TABLE = DBTables.Table1Drop;
+//    private static final String DROP_TABLE = DBTables.Table1Drop;
     //"DROP TABLE IF EXISTS " + TABLE_NAME + " ;";
 
     private static final String GETMAXNUM = DBTables.Table1GETMaxNum;
@@ -56,19 +57,21 @@ public class Role1DBHelper extends SQLiteOpenHelper {
 //    private static final String T2_COL_11 = DBTables.T2_C_11;
 //    private static final String T2_COL_12 = DBTables.T2_C_12;
 
-    private static final String CREATE_TABLE2 = DBTables.Table2Create;
-    private static final String DROP_TABLE2 = DBTables.Table2Drop;
-    private static final String GETNOTCOMPLETE2 = DBTables.Table2GETNoComplete;
+//    private static final String CREATE_TABLE2 = DBTables.Table2Create;
+//    private static final String DROP_TABLE2 = DBTables.Table2Drop;
+//    private static final String GETNOTCOMPLETE2 = DBTables.Table2GETNoComplete;
 
     public Role1DBHelper(@Nullable Context context) {
-        super(context, dbName, null, 1);
+        super(context, DBTables.dbName, null, 2);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         try {
-            db.execSQL(CREATE_TABLE);
-            db.execSQL(CREATE_TABLE2);
+            db.execSQL(DBTables.Table1Create);
+            db.execSQL(DBTables.Table2Create);
+            db.execSQL(DBTables.Table3Create);
+
         } catch (Exception ignored) {
 
         }
@@ -76,9 +79,13 @@ public class Role1DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(DROP_TABLE);
-        db.execSQL(DROP_TABLE2);
-        onCreate(db);
+        if (newVersion>oldVersion){
+            db.execSQL(DBTables.Table1Drop);
+            db.execSQL(DBTables.Table2Drop);
+            db.execSQL(DBTables.Table3Drop);
+            onCreate(db);
+        }
+
     }
 
     public boolean Role1addRecord(int zakazId, String carNum, String datTime, String zakPhone, String zakModel, String zakNote, int complete) {
@@ -91,7 +98,7 @@ public class Role1DBHelper extends SQLiteOpenHelper {
         cv.put(DBTables.COL_6, zakModel);
         cv.put(DBTables.COL_7, zakNote);
         cv.put(DBTables.COL_8, complete);
-        long result = db.insert(TABLE_NAME, null, cv);
+        long result = db.insert(DBTables.TABLE_NAME, null, cv);
 
 //        ContentValues cv2 = new ContentValues();
 //        cv2.put(COL_2, zakazId);
@@ -226,7 +233,7 @@ public class Role1DBHelper extends SQLiteOpenHelper {
             if (flag) {
                 cursor = db.query(DBTables.TABLE2_NAME, null, null, null, null, null, null, null);
             } else {
-                cursor = db.rawQuery(GETNOTCOMPLETE2, null);
+                cursor = db.rawQuery(DBTables.Table2GETNoComplete, null);
             }
 
             if (cursor != null) {
@@ -245,6 +252,51 @@ public class Role1DBHelper extends SQLiteOpenHelper {
                         usData.setRemDateBegin(cursor.getString(cursor.getColumnIndex(DBTables.T2_C_10)));
                         usData.setRemDateEnd(cursor.getString(cursor.getColumnIndex(DBTables.T2_C_11)));
                         usData.setRemComplete(cursor.getInt(cursor.getColumnIndex(DBTables.T2_C_12)));
+                        usData.setRemPlatComplete(cursor.getInt(cursor.getColumnIndex(DBTables.T2_C_13)));
+                        recordList.add(usData);
+                    } while (cursor.moveToNext());
+                }
+            }
+
+        } finally {
+            db.endTransaction();
+            cursor.close();
+        }
+        return recordList;
+    }
+
+    @SuppressLint("Range")
+    public List<Role2Data> Role2getAllClosedRecordsPlat(boolean flag) { // если false то complete=1 plat=0 , если true то complete=1 plat=1
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = null;
+        List<Role2Data> recordList = new ArrayList<>();
+
+        db.beginTransaction();
+        try {
+            if (flag) {
+//                cursor = db.query(DBTables.TABLE2_NAME, null, null, null, null, null, null, null);
+                cursor = db.rawQuery(DBTables.Table2GETCompleteAndPlat, null);
+            } else {
+                cursor = db.rawQuery(DBTables.Table2GETCompleteNotPlat, null);
+            }
+
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        Role2Data usData = new Role2Data();
+                        usData.setId(cursor.getInt(cursor.getColumnIndex(DBTables.T2_C_1)));
+                        usData.setRemNum(cursor.getInt(cursor.getColumnIndex(DBTables.T2_C_2)));
+                        usData.setRemCarNum(cursor.getString(cursor.getColumnIndex(DBTables.T2_C_3)));
+                        usData.setRemPhone(cursor.getString(cursor.getColumnIndex(DBTables.T2_C_4)));
+                        usData.setRemCarModel(cursor.getString(cursor.getColumnIndex(DBTables.T2_C_5)));                        // добавить занесение признака выполнения работ
+                        usData.setRemNote(cursor.getString(cursor.getColumnIndex(DBTables.T2_C_6)));
+                        usData.setRemDiagnost(cursor.getString(cursor.getColumnIndex(DBTables.T2_C_7)));
+                        usData.setRemResult(cursor.getString(cursor.getColumnIndex(DBTables.T2_C_8)));
+                        usData.setRemSumma(cursor.getInt(cursor.getColumnIndex(DBTables.T2_C_9)));
+                        usData.setRemDateBegin(cursor.getString(cursor.getColumnIndex(DBTables.T2_C_10)));
+                        usData.setRemDateEnd(cursor.getString(cursor.getColumnIndex(DBTables.T2_C_11)));
+                        usData.setRemComplete(cursor.getInt(cursor.getColumnIndex(DBTables.T2_C_12)));
+                        usData.setRemPlatComplete(cursor.getInt(cursor.getColumnIndex(DBTables.T2_C_13)));
                         recordList.add(usData);
                     } while (cursor.moveToNext());
                 }
@@ -258,7 +310,7 @@ public class Role1DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean Role2AddRecord(int zakId, String remCarNum, String remPhone, String remCarModel, String zakNote, String remDiagnost, String remResult, int remSumma, String remDatBegin, String remDatEnd, int complete) {// ПАРВИТЬ!!!!
+    public boolean Role2AddRecord(int zakId, String remCarNum, String remPhone, String remCarModel, String zakNote, String remDiagnost, String remResult, int remSumma, String remDatBegin, String remDatEnd, int complete, int plat) {// ПАРВИТЬ!!!!
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(DBTables.T2_C_2, zakId);
@@ -272,12 +324,13 @@ public class Role1DBHelper extends SQLiteOpenHelper {
         cv.put(DBTables.T2_C_10, remDatBegin);
         cv.put(DBTables.T2_C_11, remDatEnd);
         cv.put(DBTables.T2_C_12, complete);
+        cv.put(DBTables.T2_C_13, plat);
 
         long result = db.insert(DBTables.TABLE2_NAME, null, cv);
         return result != -1;
     }
 
-    public void Role2updateRecord(int id, int zakazId, String carNum, String zakPhone, String zakModel, String zakNote, String diagnost, String result, int summa, String datBeg, String datEnd, int complete) {
+    public void Role2updateRecord(int id, int zakazId, String carNum, String zakPhone, String zakModel, String zakNote, String diagnost, String result, int summa, String datBeg, String datEnd, int complete, int plat) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(DBTables.T2_C_2, zakazId);
@@ -291,6 +344,7 @@ public class Role1DBHelper extends SQLiteOpenHelper {
         cv.put(DBTables.T2_C_10, datBeg);
         cv.put(DBTables.T2_C_11, datEnd);
         cv.put(DBTables.T2_C_12, complete);
+        cv.put(DBTables.T2_C_13, plat);
 
         db.update(DBTables.TABLE2_NAME, cv, "ID=?", new String[]{String.valueOf(id)});
     }
@@ -344,5 +398,73 @@ public class Role1DBHelper extends SQLiteOpenHelper {
 //        }
 //        return false;
 //    }
+
+    // методы для роли 3
+
+    @SuppressLint("Range")
+    public List<Role3Data> Role3getAllRecords() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = null;
+        List<Role3Data> recordList = new ArrayList<>();
+
+        db.beginTransaction();
+        try {
+            cursor = db.query(DBTables.TABLE3_NAME, null, null, null, null, null, null, null);
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        Role3Data usData = new Role3Data();
+                        usData.setId(cursor.getInt(cursor.getColumnIndex(DBTables.T3_C_1)));
+                        usData.setRemNum(cursor.getInt(cursor.getColumnIndex(DBTables.T3_C_2)));
+                        usData.setRemCarNum(cursor.getString(cursor.getColumnIndex(DBTables.T3_C_3)));
+                        usData.setRemPhone(cursor.getString(cursor.getColumnIndex(DBTables.T3_C_4)));
+                        usData.setRemSumma(cursor.getInt(cursor.getColumnIndex(DBTables.T3_C_5)));
+                        usData.setRemPlatComplete(cursor.getString(cursor.getColumnIndex(DBTables.T3_C_6)));
+                        usData.setRemNote(cursor.getString(cursor.getColumnIndex(DBTables.T3_C_7)));
+                        recordList.add(usData);
+                    } while (cursor.moveToNext());
+                }
+            }
+
+        } finally {
+            db.endTransaction();
+            cursor.close();
+        }
+        return recordList;
+    }
+
+    public boolean Role3AddRecord(int narId, String platCarNum, String platPhone, int platSumma, String platNote, String platDat) {// ПАРВИТЬ!!!!
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(DBTables.T3_C_2, narId);
+        cv.put(DBTables.T3_C_3, platCarNum);
+        cv.put(DBTables.T3_C_4, platPhone);
+        cv.put(DBTables.T3_C_5, platSumma);
+        cv.put(DBTables.T3_C_6, platDat);
+        cv.put(DBTables.T3_C_7, platNote);
+
+        long result = db.insert(DBTables.TABLE3_NAME, null, cv);
+        return result != -1;
+    }
+
+    public void Role3updateRecord(int id, int narId, String carNum, String Phone, int summa, String datPlat, String note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(DBTables.T3_C_2, narId);
+        cv.put(DBTables.T3_C_3, carNum);
+        cv.put(DBTables.T3_C_4, Phone);
+        cv.put(DBTables.T3_C_5, summa);
+        cv.put(DBTables.T3_C_6, datPlat);
+        cv.put(DBTables.T3_C_7, note);
+
+        db.update(DBTables.TABLE3_NAME, cv, "ID=?", new String[]{String.valueOf(id)});
+    }
+
+    public void Role3deleteRecord(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(DBTables.TABLE3_NAME, "id=?", new String[]{String.valueOf(id)});
+    }
+
+
 
 }
