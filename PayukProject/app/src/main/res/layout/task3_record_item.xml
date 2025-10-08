@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="5dp"
+    app:cardCornerRadius="8dp"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp">
+
+        <TextView
+            android:id="@+id/t3_nar"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:text="NUM"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+    <TextView
+        android:id="@+id/t3_car_num"
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="2dp"
+        android:text="XXXX xx XXX"
+        android:textAlignment="center"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/t3_phone"
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:layout_marginTop="2dp"
+        android:text="+7 777 777 77 77"
+        android:gravity="center"/>
+
+</LinearLayout>
+        <TextView
+            android:id="@+id/t3_dat"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="XX-XX-XX HH:hh"
+            android:textAlignment="center"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/t3_summa"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="XXXXXXX"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            />
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

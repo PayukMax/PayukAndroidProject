@@ -24,7 +24,8 @@ public class Record2Detail extends AppCompatActivity {
     TextView tv_id, id_nar, car_num, phone, car_model, note, diagnost, result, summa, dat_B, dat_E;
     Role1DBHelper dbHelper;
     int id = 0;
-    Button btn_back, btn_closeNar;
+    int role = 0;
+    Button btn_back, btn_closeNar, btn_platNar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +47,12 @@ public class Record2Detail extends AppCompatActivity {
         dat_E = findViewById(R.id.tv2_r2_dat_e);
         btn_back = findViewById(R.id.back);
         btn_closeNar = findViewById(R.id.btn_close_naryad);
-
+        btn_platNar = findViewById(R.id.btn_plat_naryad);
+        role = 0;
         Intent intent = getIntent();
         id = Integer.parseInt(Objects.requireNonNull(intent.getStringExtra("id")));
+        role = Integer.parseInt(Objects.requireNonNull(intent.getStringExtra("role")));
+
         tv_id.setText(String.valueOf(id));
 
         btn_closeNar.setOnClickListener(new View.OnClickListener() {
@@ -68,11 +72,29 @@ public class Record2Detail extends AppCompatActivity {
             }
         });
 
+        btn_platNar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (setPlat(id)) {
+//                    Toast.makeText(Record2Detail.this, "Complete - OK", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Record2Detail.this, Role3Act.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // подчищаем историю чтобы не переместился кнопкой НАЗАД
+                    startActivity(intent);
+                    // переход на основное активити роли 2 с зачисткой истории переходов
+                }
+            }
+        });
+
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
-                Intent intent1 = new Intent(Record2Detail.this, Role2Act.class);
+                Intent intent1;
+                if (role==2){
+                    intent1 = new Intent(Record2Detail.this, Role2Act.class);
+                } else if (role==3){
+                    intent1 = new Intent(Record2Detail.this, Role3Act.class);
+                } else intent1 = new Intent(Record2Detail.this, LoginAct.class);
                 startActivity(intent1);
             }
         });
@@ -87,6 +109,16 @@ public class Record2Detail extends AppCompatActivity {
             return true;
         } else {
             Toast.makeText(this, "Закрыть наряд не удалось!!!!!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+    private boolean setPlat(int id) {
+        if (dbHelper.Role2SetPlat(id, true)) {
+            Toast.makeText(this, "Оплата успешно зафиксирована...", Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            Toast.makeText(this, "Зафиксировать оплату не удалось!!!!!", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
@@ -110,10 +142,31 @@ public class Record2Detail extends AppCompatActivity {
                 summa.setText("" + cursor.getString(cursor.getColumnIndexOrThrow(DBTables.T2_C_9)));
                 dat_B.setText("" + cursor.getString(cursor.getColumnIndexOrThrow(DBTables.T2_C_10)));
                 dat_E.setText("" + cursor.getString(cursor.getColumnIndexOrThrow(DBTables.T2_C_11)));
-                if (cursor.getInt(cursor.getColumnIndexOrThrow(DBTables.T2_C_12)) == 1) {
-                    btn_closeNar.setEnabled(false);
+                if (role == 2) {
+                    if (cursor.getInt(cursor.getColumnIndexOrThrow(DBTables.T2_C_12)) == 1) { // проверяем зактыт ло наряд
+                        btn_closeNar.setEnabled(false);
+                        btn_closeNar.setVisibility(View.GONE);
+
+                    } else {
+                        btn_closeNar.setEnabled(true);
+                        btn_closeNar.setVisibility(View.VISIBLE);
+                    }
                 } else {
-                    btn_closeNar.setEnabled(true);
+                    btn_closeNar.setEnabled(false);
+                    btn_closeNar.setVisibility(View.GONE);
+                }
+
+                if (role == 3) {
+                    if (cursor.getInt(cursor.getColumnIndexOrThrow(DBTables.T2_C_13)) == 1) { // проверяем оплачие ли наряд
+                        btn_platNar.setEnabled(false);
+                        btn_platNar.setVisibility(View.GONE);
+                    } else {
+                        btn_platNar.setEnabled(true);
+                        btn_platNar.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    btn_platNar.setEnabled(false);
+                    btn_platNar.setVisibility(View.GONE);
                 }
 
             } while (cursor.moveToNext());

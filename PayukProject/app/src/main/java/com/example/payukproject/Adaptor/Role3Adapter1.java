@@ -55,7 +55,7 @@ public class Role3Adapter1 extends RecyclerView.Adapter<Role3Adapter1.Role3ViewH
         holder.datB.setText(item.getRemDateBegin());
         holder.datE.setText(item.getRemDateEnd());
         holder.summa.setText(String.valueOf(item.getRemSumma()));
-        if (item.getRemComplete() == 0) {
+        if (item.getRemPlatComplete() == 0) {
             holder.compl.setChecked(false);
             holder.compl.setEnabled(false);
 
@@ -71,6 +71,7 @@ public class Role3Adapter1 extends RecyclerView.Adapter<Role3Adapter1.Role3ViewH
             public void onClick(View v) {
                 Intent intent = new Intent(context, Record2Detail.class);
                 intent.putExtra("id", String.valueOf(id));
+                intent.putExtra("role", String.valueOf(3));
                 context.startActivity(intent);
             }
         });

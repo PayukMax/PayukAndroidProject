@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 
@@ -389,6 +390,40 @@ public class Role1DBHelper extends SQLiteOpenHelper {
         if (x <= 0) return false;
         else return true;
     }
+
+    public boolean Role2SetPlat(int id, boolean b) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        if (b) {
+            cv.put(DBTables.T2_C_13, 1);
+        } else {
+            cv.put(DBTables.T2_C_13, 0);
+        }
+        int x = db.update(TABLE_NAME2, cv, "id=?", new String[]{String.valueOf(id)});
+
+        if(b) {
+            String selectQuery = "SELECT * FROM " + DBTables.TABLE2_NAME + " WHERE " + DBTables.T2_C_1 + " = \"" + id + "\"";
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            String car_num="", phone="", note="", platDat="";
+            int summa=0;
+            if (cursor.moveToFirst()) {
+                do {
+                    car_num = cursor.getString(cursor.getColumnIndexOrThrow(DBTables.T2_C_3));
+                    phone = cursor.getString(cursor.getColumnIndexOrThrow(DBTables.T2_C_4));
+                    summa = Integer.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(DBTables.T2_C_9)));
+                    long timestampMillis = System.currentTimeMillis();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                    platDat = sdf.format(new Date(timestampMillis));
+                } while (cursor.moveToNext());
+            }
+            db.close();
+// !!!!!!! Не очень красиво сделано, надо сделать изящнее!!!!!!!!
+            Role3AddRecord(id, car_num, phone, summa , note, platDat);
+        }
+        if (x <= 0) return false;
+        else return true;
+    }
+
 
 //    public boolean Role2checkNumRecord(int zakN) {// проверяем записи на предмет совпадения кода переданного снаружи и кода заказа в имеющихся записях. Есть совпадение - true
 //        List<Role2Data> list = Role2getAllRecords();

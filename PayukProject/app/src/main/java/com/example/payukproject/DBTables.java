@@ -40,7 +40,8 @@ public class DBTables {
     public static final String Table2GETMaxNum = "SELECT MAX("+T2_C_1+") FROM "+TABLE2_NAME+" ;";
     public static final String Table2GETNoComplete = "SELECT * FROM "+TABLE2_NAME+" WHERE "+T2_C_12+"=0 ;";
     public static final String Table2GETCompleteNotPlat = "SELECT * FROM "+TABLE2_NAME+" WHERE "+T2_C_12+"=1 AND "+T2_C_13+"=0 ;";
-    public static final String Table2GETCompleteAndPlat = "SELECT * FROM "+TABLE2_NAME+" WHERE "+T2_C_12+"=1 AND "+T2_C_13+"=1 ;";
+//    public static final String Table2GETCompleteAndPlat = "SELECT * FROM "+TABLE2_NAME+" WHERE "+T2_C_12+"=1 AND "+T2_C_13+"=1 ;";
+    public static final String Table2GETCompleteAndPlat = "SELECT * FROM "+TABLE2_NAME+" WHERE "+T2_C_12+"=1;";
 
 
     public static final String TABLE3_NAME = "role3";

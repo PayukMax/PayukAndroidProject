@@ -74,6 +74,7 @@ public class Role2Adapter2 extends RecyclerView.Adapter<Role2Adapter2.Role2ViewH
             public void onClick(View v) {
                 Intent intent = new Intent(context, Record2Detail.class);
                 intent.putExtra("id", String.valueOf(id));
+                intent.putExtra("role", String.valueOf(2));
                 context.startActivity(intent);
             }
         });
